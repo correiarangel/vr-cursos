@@ -1,0 +1,38 @@
+#api-vr-curso/HELP.md
+api-vr-curso/.gradle
+api-vr-curso/build/
+!api-vr-curso/gradle/wrapper/gradle-wrapper.jar
+!**/api-vr-curso/src/main/**/build/
+!**/api-vr-curso/src/test/**/build/
+
+### STS ###
+api-vr-curso/.apt_generated
+api-vr-curso/.classpath
+api-vr-curso/.factorypath
+api-vr-curso/.project
+api-vr-curso/.settings
+api-vr-curso/.springBeans
+api-vr-curso/.sts4-cache
+api-vr-curso/bin/
+!**/api-vr-curso/src/main/**/bin/
+!**/api-vr-curso/src/test/**/bin/
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+out/
+!**/api-vr-curso/src/main/**/out/
+!**/api-vr-curso/src/test/**/out/
+
+### NetBeans ###
+api-vr-curso/nbproject/private/
+api-vr-curso/nbbuild/
+api-vr-curso/dist/
+api-vr-curso/nbdist/
+api-vr-curso/.nb-gradle/
+
+### VS Code ###
+.vscode/
+api-vr-curso/gradle

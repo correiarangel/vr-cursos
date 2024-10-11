@@ -1,0 +1,9 @@
+apivrcurso:
+  api:
+    url: "https://api-vr-curso.com"
+    urlLicenci: "https://www.apache.org/licenses/LICENSE-2.0.html"
+    description: "API VR CURSO desenvolvida em teste de código para processo seletivo, da empresa VR Software."
+    name: "Marcos Rangel"
+    email: "okcomputer.use.linux@gmail.com"
+    version: "1.0.0"
+

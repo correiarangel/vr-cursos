@@ -25,6 +25,6 @@ class CreateStudentUsecase extends ICreateStudentUsecase {
         ),
       );
     }
-    return await _repository.create(param: param);
+    return await _repository.create(param);
   }
 }

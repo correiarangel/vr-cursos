@@ -1,11 +1,13 @@
+
+
 class StudentEntity {
   final int id;
   final String name;
-  final List<int> enrollmentIds; // List of Matricula IDs
+  final List<int> enrollmentIds;
 
   StudentEntity({
     required this.id,
     required this.name,
-    this.enrollmentIds = const [],
+    required this.enrollmentIds,
   });
 }

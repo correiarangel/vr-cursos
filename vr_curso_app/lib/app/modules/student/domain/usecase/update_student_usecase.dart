@@ -5,12 +5,10 @@ import 'package:vr_curso_app/app/modules/student/exception/student_exception.dar
 
 import '../i_repository/i_student_repository.dart';
 
-
 abstract class IUpdateStudentUsecase {
-  Future<Either<IStudentException, StudentEntity>> call({
-    required StudentDTO param,
-    required String id,
-  });
+  Future<Either<IStudentException, StudentEntity>> call(
+    StudentDTO param,
+  );
 }
 
 class UpdateStudentUsecase extends IUpdateStudentUsecase {
@@ -18,11 +16,9 @@ class UpdateStudentUsecase extends IUpdateStudentUsecase {
 
   UpdateStudentUsecase(this._repository);
   @override
-  Future<Either<IStudentException, StudentEntity>> call({
-    required StudentDTO param,
-    required String id,
-  }) async {
-    if (param.entity.name.isEmpty || id.isEmpty) {
+  Future<Either<IStudentException, StudentEntity>> call(
+      StudentDTO param) async {
+    if (param.entity.name.isEmpty) {
       return left(
         StudentException(
           message: 'ERROR: name esta vazio',
@@ -31,8 +27,7 @@ class UpdateStudentUsecase extends IUpdateStudentUsecase {
       );
     }
     return await _repository.update(
-      param: param,
-      id: id,
+      param,
     );
   }
 }

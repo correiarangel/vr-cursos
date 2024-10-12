@@ -14,7 +14,7 @@ class AppWidget extends StatelessWidget {
     return MaterialApp.router(
       routeInformationParser: Modular.routeInformationParser,
       routerDelegate: Modular.routerDelegate,
-      title: 'Inventory of people',
+      title: 'VR Curso',
 
       themeMode: ThemeMode.light,
       darkTheme: ThemeData.light(),

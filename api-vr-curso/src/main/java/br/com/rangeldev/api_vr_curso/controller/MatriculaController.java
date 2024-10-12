@@ -18,12 +18,12 @@ import java.util.stream.Collectors;
 
 @CrossOrigin
 @RestController
-@RequestMapping("/api-vr/v1/registrations")
-@Tag(name = "Registrations Controller", description = "RESTful API for managing registrations.")
+@RequestMapping("/api-vr/v1/enrollments")
+@Tag(name = "Enrollments Controller", description = "RESTful API for managing enrollment.")
 public record MatriculaController(IMatriculaSevice matriculaSevice) {
 
         @GetMapping
-        @Operation(summary = "Get all Registrations", description = "Retrieve a list of all registered ")
+        @Operation(summary = "Get all enrollments", description = "Retrieve a list of all enrollments ")
         @ApiResponses(value = {
                         @ApiResponse(responseCode = "200", description = "Operation Successful ;)")
         })
@@ -38,10 +38,10 @@ public record MatriculaController(IMatriculaSevice matriculaSevice) {
         }
 
         @GetMapping("/{id}")
-        @Operation(summary = "Get a registered by ID", description = "Retrieve a specific registered based on its ID")
+        @Operation(summary = "Get a enrollments by ID", description = "Retrieve a specific enrollments based on its ID")
         @ApiResponses(value = {
                         @ApiResponse(responseCode = "200", description = "Operation Successful ;)"),
-                        @ApiResponse(responseCode = "404", description = "registered not found")
+                        @ApiResponse(responseCode = "404", description = "enrollments not found")
         })
         public ResponseEntity<MatriculaDTO> findById(@PathVariable Long id) {
                 Matricula m = matriculaSevice.findById(id);
@@ -49,10 +49,10 @@ public record MatriculaController(IMatriculaSevice matriculaSevice) {
         }
 
         @PostMapping
-        @Operation(summary = "Create a new registered", description = "Create a new registered and return the created registered's data")
+        @Operation(summary = "Create a new enrollment", description = "Create a new enrollments and return the created enrollment's data")
         @ApiResponses(value = {
                         @ApiResponse(responseCode = "201", description = "Registered created successfully"),
-                        @ApiResponse(responseCode = "422", description = "Invalid registered data provided")
+                        @ApiResponse(responseCode = "422", description = "Invalid enrollments data provided")
         })
         public ResponseEntity<MatriculaDTO> create(@RequestBody MatriculaDTO matriculaDTO) {
                 Matricula m = matriculaSevice.create(matriculaDTO.toEntity());
@@ -67,10 +67,10 @@ public record MatriculaController(IMatriculaSevice matriculaSevice) {
         }
 
         @PutMapping("/{id}")
-        @Operation(summary = "Update a registered", description = "Update the data of an existing registered based on its ID")
+        @Operation(summary = "Update a enrollment", description = "Update the data of an existing enrollment based on its ID")
         @ApiResponses(value = {
-                        @ApiResponse(responseCode = "200", description = "Registered updated successfully"),
-                        @ApiResponse(responseCode = "404", description = "Registered not found"),
+                        @ApiResponse(responseCode = "200", description = "Enrollment updated successfully"),
+                        @ApiResponse(responseCode = "404", description = "Enrollment not found"),
                         @ApiResponse(responseCode = "422", description = "Invalid registered data provided")
         })
         public ResponseEntity<MatriculaDTO> update(@PathVariable Long id, @RequestBody MatriculaDTO matriculaDTO) {
@@ -82,10 +82,10 @@ public record MatriculaController(IMatriculaSevice matriculaSevice) {
         }
 
         @DeleteMapping("/{id}")
-        @Operation(summary = "Delete a registered", description = "Delete an existing registered based on its ID")
+        @Operation(summary = "Delete a Enrollment", description = "Delete an existing Enrollment based on its ID")
         @ApiResponses(value = {
-                        @ApiResponse(responseCode = "204", description = "Registered deleted successfully"),
-                        @ApiResponse(responseCode = "404", description = "Registered not found")
+                        @ApiResponse(responseCode = "204", description = "Enrollment deleted successfully"),
+                        @ApiResponse(responseCode = "404", description = "Enrollment not found")
         })
         public ResponseEntity<Void> delete(@PathVariable Long id) {
                 matriculaSevice.delete(id);

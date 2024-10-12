@@ -7,21 +7,11 @@ import 'package:vr_curso_app/app/modules/student/domain/student_dto/student_dto.
 import 'package:vr_curso_app/app/modules/student/domain/usecase/create_student_usecase.dart';
 import 'package:vr_curso_app/app/modules/student/exception/student_exception.dart';
 
+import '../../../../mocks/mocks.dart';
+
 class StudentRepositoryMock extends Mock implements IStudentRepository {}
 
-final studentEntity = StudentEntity(
-  id: -1, // ID inválido para testar o caso de erro
-  name: 'John Doe',
-);
 
-final emptyEntity = StudentEntity(
-  id: -1,
-  name: '', // Nome vazio para testar o erro de validação
-);
-
-final dtoMOCK = StudentDTO(
-  entity: studentEntity, // Usando entidade válida
-);
 
 void main() {
   late IStudentRepository repository;
@@ -32,11 +22,11 @@ void main() {
     usecase = CreateStudentUsecase(repository);
   });
 
-  group('Caminho Feliz ;]', () {
+  group('Create Student Caminho Feliz ;]', () {
     test('Deve completar chamada para adicionar um novo StudentEntity ...',
         () async {
       // Arrange
-      when(() => repository.create(param: dtoMOCK)).thenAnswer(
+      when(() => repository.create(dtoMOCK)).thenAnswer(
         (_) async => right(studentEntity), // Retornando o tipo correto
       );
 
@@ -45,7 +35,7 @@ void main() {
     });
     test('Deve retornar StudentEntity corretamente ...', () async {
       // Arrange
-      when(() => repository.create(param: dtoMOCK)).thenAnswer(
+      when(() => repository.create(dtoMOCK)).thenAnswer(
         (_) async => right(studentEntity),
       );
 
@@ -57,10 +47,10 @@ void main() {
     });
   });
 
-  group('Caminho Triste :[', () {
+  group('Create Student Caminho Triste :[', () {
     test('Deve completar chamada mesmo com nome vazio ...', () async {
       // Arrange
-      when(() => repository.create(param: dtoMOCK)).thenAnswer(
+      when(() => repository.create(dtoMOCK)).thenAnswer(
         (_) async => left(
           const StudentException(
             message: 'ERROR: name está vazio',
@@ -76,7 +66,7 @@ void main() {
     test('Deve retornar StudentException se o nome estiver vazio ...',
         () async {
       // Arrange
-      when(() => repository.create(param: dtoMOCK)).thenAnswer(
+      when(() => repository.create(dtoMOCK)).thenAnswer(
         (_) async => left(
           const StudentException(
             message: 'ERROR: name está vazio',

@@ -22,11 +22,11 @@ void main() {
     repository = StudentRepositoryMock();
   });
 
-  group('Caminho Feliz :]', () {
+  group('Get Student All Caminho Feliz :]', () {
     test('Deve completar chamada do usecase', () async {
       // Arrange
       when(() => repository.getAll())
-          .thenAnswer((_) async => right([StudentEntity(name: 'John', id: -1)]));
+          .thenAnswer((_) async => right([StudentEntity(name: 'John', id: -1,enrollmentIds: [])]));
 
       final usecase = GetAllStudentUsecase(repository);
 
@@ -37,7 +37,7 @@ void main() {
     test('Deve retornar lista de StudentEntity', () async {
       // Arrange
       when(() => repository.getAll())
-          .thenAnswer((_) async => right([StudentEntity(name: 'John', id: -1)]));
+          .thenAnswer((_) async => right([StudentEntity(name: 'John', id: -1,enrollmentIds: [])]));
 
       final usecase = GetAllStudentUsecase(repository);
 
@@ -49,7 +49,7 @@ void main() {
     });
   });
 
-  group('Caminho Triste :[', () {
+  group('Get Student All Caminho Triste :[', () {
     test('Deve retornar Left em caso de exceção', () async {
       // Arrange
       when(() => repository.getAll())

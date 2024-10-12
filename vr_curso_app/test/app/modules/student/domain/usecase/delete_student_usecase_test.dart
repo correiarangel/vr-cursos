@@ -5,6 +5,8 @@ import 'package:vr_curso_app/app/modules/student/domain/i_repository/i_student_r
 import 'package:vr_curso_app/app/modules/student/domain/usecase/delete_student_usecase.dart';
 import 'package:vr_curso_app/app/modules/student/exception/student_exception.dart';
 
+import '../../../../mocks/mocks.dart';
+
 class StudentRepositoryMock extends Mock implements IStudentRepository {}
 
 void main() {
@@ -14,11 +16,11 @@ void main() {
     repository = StudentRepositoryMock();
   });
 
-  group('Caminho Feliz ;]', () {
+  group('Delete Student Caminho Feliz ;]', () {
     test('Deve deletar um StudentEntity ...', () async {
       // Arrange
-      const idMock = '1'; // ID mockado válido
-      when(() => repository.delete(idMock)).thenAnswer(
+
+      when(() => repository.delete(dtoMOCK)).thenAnswer(
         (_) async => right(true), // Retorna sucesso
       );
 
@@ -26,30 +28,30 @@ void main() {
       final usecase = DeleteStudentUsecase(repository);
 
       // Assert
-      expect(usecase(idMock), completes);
+      expect(usecase.call(dtoMOCK), completes);
     });
 
     test('Deve retornar void após deletar um StudentEntity ...', () async {
       // Arrange
-      const idMock = '1'; // ID mockado válido
-      when(() => repository.delete(idMock)).thenAnswer(
+
+      when(() => repository.delete(dtoMOCK)).thenAnswer(
         (_) async => right(true), // Retorna sucesso
       );
 
       // Act
       final usecase = DeleteStudentUsecase(repository);
-      final result = await usecase.call(idMock);
+      final result = await usecase.call(dtoMOCK);
 
       // Assert
       expect(result.fold((l) => l, (r) => null), isA<void>());
     });
   });
 
-  group('Caminho Triste :[', () {
-    test('Deve completar chamada mesmo com id vazio ...', () async {
+  group('Delete Student Caminho Triste :[', () {
+    test('Deve completar chamada mesmo com id = -1  ...', () async {
       // Arrange
-      const emptyId = ''; // ID vazio
-      when(() => repository.delete(emptyId)).thenAnswer(
+
+      when(() => repository.delete(dtoEntityMOCK)).thenAnswer(
         (_) async => left(
           const StudentException(
             message: 'ERROR: O Parametro esta vazio',
@@ -62,13 +64,13 @@ void main() {
       final usecase = DeleteStudentUsecase(repository);
 
       // Assert
-      expect(usecase(emptyId), completes);
+      expect(usecase(dtoEntityMOCK), completes);
     });
 
-    test('Deve retornar StudentException caso o id esteja vazio ...', () async {
+    test('Deve retornar StudentException caso id = -1 ...', () async {
       // Arrange
-      const emptyId = ''; // ID vazio
-      when(() => repository.delete(emptyId)).thenAnswer(
+ 
+      when(() => repository.delete(dtoEntityMOCK)).thenAnswer(
         (_) async => left(
           const StudentException(
             message: 'ERROR: O Parametro esta vazio',
@@ -79,7 +81,7 @@ void main() {
 
       // Act
       final usecase = DeleteStudentUsecase(repository);
-      final result = await usecase.call(emptyId);
+      final result = await usecase.call(dtoEntityMOCK);
 
       // Assert
       expect(result.fold((l) => l, (r) => null), isA<StudentException>());

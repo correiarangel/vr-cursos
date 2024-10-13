@@ -1,10 +1,10 @@
 
 import 'package:vr_curso_app/app/modules/course/domain/entities/cuorse_entity.dart';
 
-class CuorseAdapter  {
+class CourseAdapter  {
 
 
-  Map<String, dynamic> toMap(CourseEntity entity) {
+static  Map<String, dynamic> toMap(CourseEntity entity) {
     return {
       'codigo':entity. id,
       'descricao':entity. description,
@@ -18,7 +18,7 @@ class CuorseAdapter  {
       id: map['codigo']?.toInt() ?? 0,
       description: map['descricao'] ?? '',
       syllabus: map['ementa'] ?? '',
-      enrollmentCodes: List<int>.from(map['cursoCodigosMatriculas']),
+      enrollmentCodes: List<int>.from(map['cursoCodigosMatriculas']??[]),
     );
   }
 

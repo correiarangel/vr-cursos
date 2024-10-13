@@ -2,6 +2,9 @@ import 'package:dio/dio.dart';
 import 'package:dio/io.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:vr_curso_app/app/core/shared/services/client_http/dio_client_http.dart';
+import 'package:vr_curso_app/app/modules/course/domain/cuorso_dto/cuorso_dto.dart';
+import 'package:vr_curso_app/app/modules/course/domain/entities/cuorse_entity.dart';
+import 'package:vr_curso_app/app/modules/course/domain/repositories/i_course_repository.dart';
 import 'package:vr_curso_app/app/modules/student/domain/entities/student_entity.dart';
 import 'package:vr_curso_app/app/modules/student/domain/student_dto/student_dto.dart';
 
@@ -14,6 +17,8 @@ class ResponseMock extends Mock implements Response {}
 class DioErrorMock extends Mock implements DioException {}
 
 class RequestOptionsMock extends Mock implements RequestOptions {}
+
+class CourseRepositoryMock extends Mock implements ICourseRepository {}
 
 const mockStudentsData = [
   {'codigo': 1, 'nome': 'John', 'alunoCodigosMatriculas': []},
@@ -33,10 +38,32 @@ const mockCuorsesData = [
     'cursoCodigosMatriculas': []
   }
 ];
+
+const courseEntityMock = CourseEntity(
+    id: 1, description: 'codigo', syllabus: 'syllabus', enrollmentCodes: []);
+
+final courseDTOMock = CourseDTO(courseEntityMock);
+
+const courseEmptyMock =
+    CourseEntity(id: -1, description: '', syllabus: '', enrollmentCodes: []);
+
+final courseDtoEmptyMock = CourseDTO(courseEmptyMock);
+const List<CourseEntity> courseEntityListMock = [
+  courseEntityMock,
+  courseEmptyMock
+];
+
+final Map<String, dynamic> mockCoursetDataMap = {
+  ' codigo': 1,
+  'descricao': 'descricao',
+  'ementa': 'ementa',
+  'alunoCodigosMatriculas': [1]
+};
+
 final Map<String, dynamic> mockStudentDataMap = {
   'codigo': 1,
   'nome': 'John',
-  'alunoCodigosMatriculas': []
+  'alunoCodigosMatriculas': [1]
 };
 
 final studentEntity = StudentEntity(

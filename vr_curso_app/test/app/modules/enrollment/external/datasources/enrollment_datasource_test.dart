@@ -1,45 +1,34 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:vr_curso_app/app/core/shared/services/client_http/dio_client_http.dart';
 import 'package:vr_curso_app/app/core/shared/services/client_http/i_client_http.dart';
 import 'package:vr_curso_app/app/core/value/const_http.dart';
-import 'package:vr_curso_app/app/modules/course/exception/course_exception.dart';
-import 'package:vr_curso_app/app/modules/course/external/datasources/course_datasource.dart';
-import 'package:vr_curso_app/app/modules/course/infra/adapters/cuorse_adapter.dart';
-import 'package:vr_curso_app/app/modules/course/infra/datasources/i_course_datasourse.dart';
+import 'package:vr_curso_app/app/modules/enrollment/exception/enrollment_exception.dart';
+import 'package:vr_curso_app/app/modules/enrollment/external/datasources/enrollment_datasource.dart';
+import 'package:vr_curso_app/app/modules/enrollment/infra/adapters/enrollment_adapter.dart';
+import 'package:vr_curso_app/app/modules/enrollment/infra/datasources/i_enrollment_datasourse.dart';
 
 import '../../../../mocks/mocks.dart';
 
 class ClientHttpMock extends Mock implements DioClientHttp {}
 
-
-const mockCoursesData = [
-  {'codigo': 1, 'nome': 'Mathematics', 'descricao': 'Basic Math'},
-  {'codigo': 2, 'nome': 'Physics', 'descricao': 'Fundamental Physics'}
-];
-final mockCourseDataMap = {
-  'codigo': 1,
-  'nome': 'Mathematics',
-  'descricao': 'Basic Math'
-};
-
 void main() {
   late IClientHttp client;
-  late ICourseDatasource datasource;
+  late IEnrollmentDatasource datasource;
 
   setUp(() {
-    debugPrint('Starting tests...');
     client = ClientHttpMock(); // Mock implementation of IClientHttp
-    datasource = CourseDatasource(client);
+    datasource = EnrollmentDatasource(client);
   });
 
-  group('Course Datasource Happy path ;]', () {
-    test('Should return a List<Map<String, dynamic>> of courses...', () async {
-          const url = ConstHttp.courses;
+  group('Enrollment Datasource Happy path ;]', () {
+    test('Should return a List<Map<String, dynamic>> of enrollments...',
+        () async {
+                const url = ConstHttp.enrollments;
+
       when(() => client.get(url)).thenAnswer(
         (_) async => BaseResponse(
-          mockCoursesData,
+          mockLstEnrollmentsData,
           BaseRequest(
             data: {},
             method: 'get',
@@ -50,16 +39,16 @@ void main() {
         ),
       );
 
-      final courseList = await datasource.getAll();
+      final enrollmentList = await datasource.getAll();
 
-      expect(courseList, isA<List<Map<String, dynamic>>>());
+      expect(enrollmentList, isA<List<Map<String, dynamic>>>());
     });
 
-    test('Should return a list of courses with 2 entries...', () async {
-     const url = ConstHttp.courses;
+    test('Should return a list of enrollments with 2 entries...', () async {
+      const url = ConstHttp.enrollments;
       when(() => client.get(url)).thenAnswer(
         (_) async => BaseResponse(
-          mockCoursesData,
+          mockEnrollmentData,
           BaseRequest(
             data: {},
             method: 'get',
@@ -70,16 +59,17 @@ void main() {
         ),
       );
 
-      final courseList = await datasource.getAll();
+      final enrollment = await datasource.getAll();
 
-      expect(courseList.length, 2);
+      expect(enrollment,isA<Map<String,dynamic>>());
     });
 
-    test('Should return Map<String, dynamic> with course data...', () async {
-      const url = '${ConstHttp.courses}1';
+    test('Should return Map<String, dynamic> with enrollment data...',
+        () async {
+        const url = '${ConstHttp.enrollments}1';
       when(() => client.get(url)).thenAnswer(
         (_) async => BaseResponse(
-          mockCourseDataMap,
+          mockEnrollmentData,
           BaseRequest(
             data: {},
             method: 'get',
@@ -90,16 +80,16 @@ void main() {
         ),
       );
 
-      final course = await datasource.get(courseDTOMock);
+      final enrollment = await datasource.get(enrollmenDtoMock);
 
-      expect(course, isA<Map<String, dynamic>>());
+      expect(enrollment, isA<Map<String, dynamic>>());
     });
 
-    test('Should return the course name as Mathematics...', () async {
-      const url = '${ConstHttp.courses}1';
+    test('Should return the student name as John Doe...', () async {
+         const url = '${ConstHttp.enrollments}1';
       when(() => client.get(url)).thenAnswer(
         (_) async => BaseResponse(
-          mockCourseDataMap,
+          mockEnrollmentData,
           BaseRequest(
             data: {},
             method: 'get',
@@ -110,19 +100,18 @@ void main() {
         ),
       );
 
-      final course = await datasource.get(courseDTOMock);
+      final enrollment = await datasource.get(enrollmenDtoMock);
 
-      expect(course['nome'], 'Mathematics');
+      expect(enrollment['codigo'],1);
     });
 
-    test('Should create a new course and return Map...', () async {
-      const url = ConstHttp.courses;
-      
-      final param = CourseAdapter.toMap(courseDTOMock.entity);
+    test('Should create a new enrollment and return Map...', () async {
+         const url = ConstHttp.enrollments;
+      final param = EnrollmentAdapter.toMap(enrollmenDtoMock.entity);
 
       when(() => client.post(url, data: param)).thenAnswer(
         (_) async => BaseResponse(
-          mockCourseDataMap,
+          mockEnrollmentData,
           BaseRequest(
             data: param,
             method: 'post',
@@ -133,14 +122,14 @@ void main() {
         ),
       );
 
-      final result = await datasource.create(courseDTOMock);
+      final result = await datasource.create(enrollmenDtoMock);
 
       expect(result, isA<Map<String, dynamic>>());
     });
 
-    test('Should update an existing course...', () async {
-      const url = '${ConstHttp.courses}1';
-      final param = CourseAdapter.toMap(courseDTOMock.entity);
+    test('Should update an existing enrollment...', () async {
+          const url = '${ConstHttp.enrollments}1';
+      final param = EnrollmentAdapter.toMap(enrollmenDtoMock.entity);
 
       when(() => client.put(url, data: param)).thenAnswer(
         (_) async => BaseResponse(
@@ -155,11 +144,11 @@ void main() {
         ),
       );
 
-      expect(datasource.update(courseDTOMock), completes);
+      expect(datasource.update(enrollmenDtoMock), completes);
     });
 
-    test('Should delete a course and return true...', () async {
-       const url = '${ConstHttp.courses}1';
+    test('Should delete an enrollment and return true...', () async {
+           const url = '${ConstHttp.enrollments}1';
 
       when(() => client.delete(url)).thenAnswer(
         (_) async => BaseResponse(
@@ -174,16 +163,16 @@ void main() {
         ),
       );
 
-      final result = await datasource.delete(courseDTOMock);
+      final result = await datasource.delete(enrollmenDtoMock);
 
       expect(result, true);
     });
   });
 
-  group('Course Datasource Sad path :[', () {
-    test('Should return CourseException on failure to fetch courses...',
+  group('Enrollment Datasource Sad path :[', () {
+    test('Should return EnrollmentException on failure to fetch enrollments...',
         () async {
-    const url = ConstHttp.courses;
+      const url = ConstHttp.enrollments;
       when(() => client.get(url)).thenAnswer(
         (_) async => BaseResponse(
           {},
@@ -199,12 +188,13 @@ void main() {
 
       final future = await datasource.getAll();
 
-      expect(future, isA<CourseException>());
+      expect(future, isA<EnrollmentException>());
     });
 
-    test('Should return CourseException on failure to fetch a course...',
+    test(
+        'Should return EnrollmentException on failure to fetch an enrollment...',
         () async {
-      const url = '${ConstHttp.courses}-1';
+     const url = '${ConstHttp.enrollments}-1';
 
       when(() => client.get(url)).thenAnswer(
         (_) async => Future.value(BaseResponse(
@@ -219,15 +209,16 @@ void main() {
         )),
       );
 
-      final future = await datasource.get(courseDtoEmptyMock);
+      final future = await datasource.get(enrollmenDtoEmptyMock);
 
-      expect(future, isA<CourseException>());
+      expect(future, isA<EnrollmentException>());
     });
 
-    test('Should return CourseException on failure to create a course...',
+    test(
+        'Should return EnrollmentException on failure to create an enrollment...',
         () async {
-      const url = ConstHttp.courses;
-      final param = CourseAdapter.toMap(courseDtoEmptyMock.entity);
+     const url = ConstHttp.enrollments;
+      final param = EnrollmentAdapter.toMap(enrollmenDtoEmptyMock.entity);
 
       when(() => client.post(url, data: param)).thenAnswer(
         (_) async => BaseResponse(
@@ -242,15 +233,16 @@ void main() {
         ),
       );
 
-      final future = await datasource.create(courseDtoEmptyMock);
+      final future = await datasource.create(enrollmenDtoEmptyMock);
 
-      expect(future, isA<CourseException>());
+      expect(future, isA<EnrollmentException>());
     });
 
-    test('Should return CourseException on failure to update a course...',
+    test(
+        'Should return EnrollmentException on failure to update an enrollment...',
         () async {
-      const url = '${ConstHttp.courses}-1';
-      final param = CourseAdapter.toMap(courseDtoEmptyMock.entity);
+     const url = '${ConstHttp.enrollments}-1';
+      final param = EnrollmentAdapter.toMap(enrollmenDtoEmptyMock.entity);
 
       when(() => client.put(url, data: param)).thenAnswer(
         (_) async => BaseResponse(
@@ -265,14 +257,15 @@ void main() {
         ),
       );
 
-      final future = await datasource.update(courseDtoEmptyMock);
+      final future = await datasource.update(enrollmenDtoEmptyMock);
 
-      expect(future, isA<CourseException>());
+      expect(future, isA<EnrollmentException>());
     });
 
-    test('Should return CourseException on failure to delete a course...',
+    test(
+        'Should return EnrollmentException on failure to delete an enrollment...',
         () async {
-          const url = '${ConstHttp.courses}-1';
+      const url = '${ConstHttp.enrollments}-1';
 
       when(() => client.delete(url)).thenAnswer(
         (_) async => BaseResponse(
@@ -287,9 +280,9 @@ void main() {
         ),
       );
 
-      final future = await datasource.delete(courseDtoEmptyMock);
+      final future = await datasource.delete(enrollmenDtoEmptyMock);
 
-      expect(future, isA<CourseException>());
+      expect(future, isA<EnrollmentException>());
     });
   });
 }

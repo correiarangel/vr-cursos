@@ -5,8 +5,11 @@ import 'package:vr_curso_app/app/core/shared/services/client_http/dio_client_htt
 import 'package:vr_curso_app/app/modules/course/domain/cuorso_dto/cuorso_dto.dart';
 import 'package:vr_curso_app/app/modules/course/domain/entities/cuorse_entity.dart';
 import 'package:vr_curso_app/app/modules/course/domain/repositories/i_course_repository.dart';
+import 'package:vr_curso_app/app/modules/enrollment/domain/entities/enrollment_entity.dart';
+import 'package:vr_curso_app/app/modules/enrollment/domain/params_dto/enrollment_dto.dart';
 import 'package:vr_curso_app/app/modules/student/domain/entities/student_entity.dart';
 import 'package:vr_curso_app/app/modules/student/domain/student_dto/student_dto.dart';
+import 'package:vr_curso_app/app/modules/student/presenter/models/student_model.dart';
 
 class DioMock extends Mock implements DioForNative {}
 
@@ -39,10 +42,52 @@ const mockCuorsesData = [
   }
 ];
 
+const mockLstEnrollmentsData = [
+  {
+    'codigo': 1,
+    'curso': {
+      'codigo': 1,
+      'descricao': 'descricao 1',
+      'ementa': 'ementa 1',
+      'cursoCodigosMatriculas': [1]
+    },
+    'aluno': {
+      'codigo': 1,
+      'nome': 'John',
+      'alunoCodigosMatriculas': [1]
+    }
+  }
+];
+
+const mockEnrollmentData = {
+  'codigo': 1,
+  'curso': {
+    'codigo': 1,
+    'descricao': 'descricao 1',
+    'ementa': 'ementa 1',
+    'cursoCodigosMatriculas': [1]
+  },
+  'aluno': {
+    'codigo': 1,
+    'nome': 'John',
+    'alunoCodigosMatriculas': [1]
+  }
+};
 const courseEntityMock = CourseEntity(
     id: 1, description: 'codigo', syllabus: 'syllabus', enrollmentCodes: []);
 
 final courseDTOMock = CourseDTO(courseEntityMock);
+
+
+
+final enrollmenEntityMock = EnrollmentEntity(
+    id: 1, course: courseEntityMock, student: studentEntityMock);
+final enrollmenEmptyMock = EnrollmentEntity(
+    id: -1, course: courseEmptyMock, student: studentEmptyMock);
+final enrollmenDtoMock = EnrollmentDTO(entity: enrollmenEntityMock);
+final enrollmenDtoEmptyMock = EnrollmentDTO(entity: enrollmenEmptyMock);
+
+final List<EnrollmentEntity> lstEnrollmenEntityMock = [enrollmenEntityMock];
 
 const courseEmptyMock =
     CourseEntity(id: -1, description: '', syllabus: '', enrollmentCodes: []);
@@ -66,20 +111,23 @@ final Map<String, dynamic> mockStudentDataMap = {
   'alunoCodigosMatriculas': [1]
 };
 
-final studentEntity = StudentEntity(
-    id: 1, // ID inválido para testar o caso de erro
-    name: 'John',
-    enrollmentIds: []);
 
-final emptyEntity = StudentEntity(
-    id: -1,
-    name: '', // Nome vazio para testar o erro de validação
+final studentEntityMock =
+    StudentEntity(id: 1, name: 'John', enrollmentIds: [1]);
+final List<StudentEntity> studentListEntityMock = [studentEntityMock];
+final studentModelMock = StudentModel(id: 1, name: 'John', enrollmentIds: [1]);
+final studentDTOMock = StudentDTO(entity: studentEntityMock);
+
+
+final studentEmptyMock = StudentEntity(
+    id: -1, //
+    name: '',
     enrollmentIds: []);
 
 final dtoMOCK = StudentDTO(
-  entity: studentEntity, // Usando entidade válida
+  entity: studentModelMock, // Usando entidade válida
 );
 
 final dtoEntityMOCK = StudentDTO(
-  entity: emptyEntity, // Usando entidade válida
+  entity: studentEmptyMock, // Usando entidade válida
 );

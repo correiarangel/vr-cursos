@@ -26,7 +26,6 @@ class CreateCourseUsecase extends ICreateCourseUsecase {
       );
     }
 
-    // Call the repository to create the course
     return await repository.create(param);
   }
 }

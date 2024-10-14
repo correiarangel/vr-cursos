@@ -1,3 +1,6 @@
+import 'dart:developer';
+
+import 'package:vr_curso_app/app/core/value/const_http.dart';
 import 'package:vr_curso_app/app/modules/course/domain/cuorso_dto/cuorso_dto.dart';
 import 'package:vr_curso_app/app/modules/course/exception/course_exception.dart';
 import 'package:vr_curso_app/app/modules/course/infra/adapters/cuorse_adapter.dart';
@@ -12,7 +15,7 @@ class CourseDatasource implements ICourseDatasource {
 
   @override
   Future<dynamic> getAll() async {
-    final response = await client.get('your-api-endpoint/courses');
+    final response = await client.get(ConstHttp.courses);
 
     if (response.statusCode != 200) {
       return CourseException(
@@ -26,7 +29,8 @@ class CourseDatasource implements ICourseDatasource {
 
   @override
   Future<dynamic> get(CourseDTO param) async {
-    final response = await client.get('your-api-endpoint/courses/${param.entity.id}');
+    log(('${ConstHttp.courses}${param.entity.id}'));
+    final response = await client.get('${ConstHttp.courses}${param.entity.id}');
 
     if (response.statusCode != 200) {
       return CourseException(
@@ -40,7 +44,8 @@ class CourseDatasource implements ICourseDatasource {
 
   @override
   Future<dynamic> delete(CourseDTO param) async {
-    final response = await client.delete('your-api-endpoint/courses/${param.entity.id}');
+    final response =
+        await client.delete('${ConstHttp.courses}${param.entity.id}');
 
     if (response.statusCode != 204) {
       return CourseException(
@@ -55,7 +60,7 @@ class CourseDatasource implements ICourseDatasource {
   @override
   Future<dynamic> update(CourseDTO param) async {
     final response = await client.put(
-      'your-api-endpoint/courses/${param.entity.id}',
+      '${ConstHttp.courses}${param.entity.id}',
       data: CourseAdapter.toMap(param.entity), // Converte CourseDTO para Map
     );
 
@@ -72,7 +77,7 @@ class CourseDatasource implements ICourseDatasource {
   @override
   Future<dynamic> create(CourseDTO param) async {
     final response = await client.post(
-      'your-api-endpoint/courses',
+      ConstHttp.courses,
       data: CourseAdapter.toMap(param.entity), // Converte CourseDTO para Map
     );
 

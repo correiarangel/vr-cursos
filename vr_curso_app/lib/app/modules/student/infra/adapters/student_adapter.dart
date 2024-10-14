@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:vr_curso_app/app/modules/student/domain/entities/student_entity.dart';
 
 class StudentAdapter {
@@ -16,4 +18,8 @@ class StudentAdapter {
       enrollmentIds: List<int>.from(map['alunoCodigosMatriculas']),
     );
   }
+
+    String toJson(StudentEntity entity) => json.encode(toMap(entity));
+
+  static StudentEntity fromJson(String source) => fromMap(json.decode(source));
 }

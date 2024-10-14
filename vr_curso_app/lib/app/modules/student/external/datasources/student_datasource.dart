@@ -1,5 +1,5 @@
+import 'package:vr_curso_app/app/core/value/const_http.dart';
 import 'package:vr_curso_app/app/modules/student/domain/student_dto/student_dto.dart';
-
 
 import '../../../../core/shared/services/client_http/i_client_http.dart';
 import '../../exception/student_exception.dart';
@@ -13,7 +13,8 @@ class StudentDatasource implements IStudentDatasource {
 
   @override
   Future<dynamic> getAll() async {
-    final response = await client.get('your-api-endpoint/students');
+    
+    final response = await client.get(ConstHttp.students);
 
     if (response.statusCode != 200) {
       return StudentException(
@@ -26,8 +27,8 @@ class StudentDatasource implements IStudentDatasource {
   }
 
   @override
-  Future<dynamic> get( StudentDTO param) async {
-    final response = await client.get('your-api-endpoint/students/${param.entity.id}');
+  Future<dynamic> get(StudentDTO param) async {
+    final response = await client.get('${ConstHttp.students}${param.entity.id}');
 
     if (response.statusCode != 200) {
       return StudentException(
@@ -41,7 +42,7 @@ class StudentDatasource implements IStudentDatasource {
 
   @override
   Future<dynamic> delete(StudentDTO param) async {
-    final response = await client.delete('your-api-endpoint/students/${param.entity.id}');
+    final response = await client.delete('${ConstHttp.students}${param.entity.id}');
 
     if (response.statusCode != 204) {
       return StudentException(
@@ -54,9 +55,9 @@ class StudentDatasource implements IStudentDatasource {
   }
 
   @override
-  Future<dynamic> update( StudentDTO param) async {
+  Future<dynamic> update(StudentDTO param) async {
     final response = await client.put(
-      'your-api-endpoint/students/${param.entity.id}',
+      '${ConstHttp.students}${param.entity.id}',
       data: StudentAdapter.toMap(param.entity), // Convert StudentDTO to a Map
     );
 
@@ -73,7 +74,7 @@ class StudentDatasource implements IStudentDatasource {
   @override
   Future<dynamic> create(StudentDTO param) async {
     final response = await client.post(
-      'your-api-endpoint/students',
+      ConstHttp.students,
       data: StudentAdapter.toMap(param.entity), // Convert StudentDTO to a Map
     );
 

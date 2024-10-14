@@ -82,9 +82,9 @@ class DioClientHttp implements IClientHttp {
 }
 
 class DioInterceptor
-    extends BaseInterceptor<RequestOptions, Response, DioError> {
+    extends BaseInterceptor<RequestOptions, Response, DioException> {
   @override
-  Future<DioError> onError(DioError error) async {
+  Future<DioException> onError(DioException error) async {
     return error;
   }
 

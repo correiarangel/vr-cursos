@@ -3,6 +3,7 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:vr_curso_app/app/core/shared/services/client_http/i_client_http.dart';
 import 'package:vr_curso_app/app/core/shared/services/overlay/i_overlay_service.dart';
 import 'package:vr_curso_app/app/core/shared/services/shared_preferences/i_local_storage.dart';
+import 'package:vr_curso_app/app/core/value/const_http.dart';
 
 import 'shared/services/client_http/dio_client_http.dart';
 import 'shared/services/overlay/asuka_overlay_service.dart';
@@ -22,7 +23,7 @@ class CoreModule extends Module {
   // Método para criar a instância de Dio
   Dio _dioBind() => Dio(
         BaseOptions(
-          baseUrl: "https://api.seudominio.com",
+          baseUrl: ConstHttp.base,
           receiveTimeout: const Duration(seconds: 15),
           connectTimeout: const Duration(seconds: 15),
           headers: {

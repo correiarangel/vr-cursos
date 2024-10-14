@@ -3,6 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:vr_curso_app/app/core/shared/services/client_http/dio_client_http.dart';
 import 'package:vr_curso_app/app/core/shared/services/client_http/i_client_http.dart';
+import 'package:vr_curso_app/app/core/value/const_http.dart';
 import 'package:vr_curso_app/app/modules/student/exception/student_exception.dart';
 import 'package:vr_curso_app/app/modules/student/external/datasources/student_datasource.dart';
 import 'package:vr_curso_app/app/modules/student/infra/adapters/student_adapter.dart';
@@ -34,7 +35,7 @@ void main() {
 
   group('Student Datasource Happy path ;]', () {
     test('Should return a List<Map<String, dynamic>> of students...', () async {
-      var url = 'your-api-endpoint/students';
+      var url = ConstHttp.students;
       when(() => client.get(url)).thenAnswer(
         (_) async => BaseResponse(
           mockStudentsData,
@@ -54,7 +55,7 @@ void main() {
     });
 
     test('Should return a list of students with 2 entries...', () async {
-      var url = 'your-api-endpoint/students';
+      var url = ConstHttp.students;
       when(() => client.get(url)).thenAnswer(
         (_) async => BaseResponse(
           mockStudentsData,
@@ -74,7 +75,7 @@ void main() {
     });
 
     test('Should return Map<String, dynamic> with student data...', () async {
-      var url = 'your-api-endpoint/students/1';
+      var url = '${ConstHttp.students}1';
       when(() => client.get(url)).thenAnswer(
         (_) async => BaseResponse(
           mockStudentDataMap,
@@ -94,7 +95,7 @@ void main() {
     });
 
     test('Should return the student name as John...', () async {
-      var url = 'your-api-endpoint/students/1';
+      var url = '${ConstHttp.students}1';
       when(() => client.get(url)).thenAnswer(
         (_) async => BaseResponse(
           mockStudentDataMap,
@@ -114,8 +115,8 @@ void main() {
     });
 
     test('Should create a new student and return Map...', () async {
-      var url = 'your-api-endpoint/students';
-      final param = StudentAdapter.toMap(studentEntity);
+      var url = ConstHttp.students;
+      final param = StudentAdapter.toMap(studentEntityMock);
 
       when(() => client.post(url, data: param)).thenAnswer(
         (_) async => BaseResponse(
@@ -132,12 +133,12 @@ void main() {
 
       final result = await datasource.create(dtoMOCK);
 
-      expect(result, isA<Map<String,dynamic>>());
+      expect(result, isA<Map<String, dynamic>>());
     });
 
     test('Should update an existing student...', () async {
-      var url = 'your-api-endpoint/students/1';
-      final param = StudentAdapter.toMap(studentEntity);
+      var url = '${ConstHttp.students}1';
+      final param = StudentAdapter.toMap(studentEntityMock);
 
       when(() => client.put(url, data: param)).thenAnswer(
         (_) async => BaseResponse(
@@ -156,7 +157,7 @@ void main() {
     });
 
     test('Should delete a student and return true...', () async {
-      var url = 'your-api-endpoint/students/1';
+      var url = '${ConstHttp.students}1';
 
       when(() => client.delete(url)).thenAnswer(
         (_) async => BaseResponse(
@@ -180,7 +181,7 @@ void main() {
   group('Student Datasource Sad path :[', () {
     test('Should return StudentException on failure to fetch students...',
         () async {
-      var url = 'your-api-endpoint/students';
+      var url = ConstHttp.students;
       when(() => client.get(url)).thenAnswer(
         (_) async => BaseResponse(
           {},
@@ -201,7 +202,7 @@ void main() {
 
     test('Should return StudentException on failure to fetch a student...',
         () async {
-   var url = 'your-api-endpoint/students/-1';
+      var url = '${ConstHttp.students}-1';
 
       when(() => client.get(url)).thenAnswer(
         (_) async => Future.value(BaseResponse(
@@ -223,7 +224,7 @@ void main() {
 
     test('Should return StudentException on failure to create a student...',
         () async {
-      var url = 'your-api-endpoint/students';
+      var url = ConstHttp.students;
       final param = StudentAdapter.toMap(dtoEntityMOCK.entity);
 
       when(() => client.post(url, data: param)).thenAnswer(
@@ -246,7 +247,7 @@ void main() {
 
     test('Should return StudentException on failure to update a student...',
         () async {
-      var url = 'your-api-endpoint/students/-1';
+      var url = '${ConstHttp.students}-1';
       final param = StudentAdapter.toMap(dtoEntityMOCK.entity);
 
       when(() => client.put(url, data: param)).thenAnswer(
@@ -262,14 +263,14 @@ void main() {
         ),
       );
 
-      final future =await  datasource.update(dtoEntityMOCK);
+      final future = await datasource.update(dtoEntityMOCK);
 
       expect(future, isA<StudentException>());
     });
 
     test('Should return StudentException on failure to delete a student...',
         () async {
-         var url = 'your-api-endpoint/students/-1';
+      var url = '${ConstHttp.students}-1';
 
       when(() => client.delete(url)).thenAnswer(
         (_) async => BaseResponse(

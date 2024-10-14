@@ -11,8 +11,6 @@ import '../../../../mocks/mocks.dart';
 
 class StudentRepositoryMock extends Mock implements IStudentRepository {}
 
-
-
 void main() {
   late IStudentRepository repository;
   late CreateStudentUsecase usecase;
@@ -27,7 +25,7 @@ void main() {
         () async {
       // Arrange
       when(() => repository.create(dtoMOCK)).thenAnswer(
-        (_) async => right(studentEntity), // Retornando o tipo correto
+        (_) async => right(studentEntityMock), // Retornando o tipo correto
       );
 
       // Act & Assert
@@ -36,7 +34,7 @@ void main() {
     test('Deve retornar StudentEntity corretamente ...', () async {
       // Arrange
       when(() => repository.create(dtoMOCK)).thenAnswer(
-        (_) async => right(studentEntity),
+        (_) async => right(studentEntityMock),
       );
 
       // Act
@@ -50,7 +48,7 @@ void main() {
   group('Create Student Caminho Triste :[', () {
     test('Deve completar chamada mesmo com nome vazio ...', () async {
       // Arrange
-      when(() => repository.create(dtoMOCK)).thenAnswer(
+      when(() => repository.create(dtoEntityMOCK)).thenAnswer(
         (_) async => left(
           const StudentException(
             message: 'ERROR: name está vazio',
@@ -60,13 +58,13 @@ void main() {
       );
 
       // Act & Assert
-      expect(usecase.call(StudentDTO(entity: emptyEntity)), completes);
+      expect(usecase.call(StudentDTO(entity: dtoEntityMOCK.entity)), completes);
     });
 
     test('Deve retornar StudentException se o nome estiver vazio ...',
         () async {
       // Arrange
-      when(() => repository.create(dtoMOCK)).thenAnswer(
+      when(() => repository.create(dtoEntityMOCK)).thenAnswer(
         (_) async => left(
           const StudentException(
             message: 'ERROR: name está vazio',
@@ -76,7 +74,7 @@ void main() {
       );
 
       // Act
-      final result = await usecase.call(StudentDTO(entity: emptyEntity));
+      final result = await usecase.call(StudentDTO(entity: dtoEntityMOCK.entity));
 
       // Assert
       expect(result.fold((l) => l, (r) => null), isA<StudentException>());

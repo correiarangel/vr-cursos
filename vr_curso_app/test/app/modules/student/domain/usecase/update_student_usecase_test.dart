@@ -25,7 +25,7 @@ void main() {
         () async {
       // Arrange
       when(() => repository.update(dtoMOCK)).thenAnswer(
-        (_) async => right(studentEntity), // Retornando o tipo correto
+        (_) async => right(studentEntityMock), // Retornando o tipo correto
       );
 
       // Act & Assert
@@ -38,7 +38,7 @@ void main() {
     test('Deve retornar StudentEntity atualizado corretamente ...', () async {
       // Arrange
       when(() => repository.update(dtoMOCK)).thenAnswer(
-        (_) async => right(studentEntity), // Retornando o tipo correto
+        (_) async => right(studentEntityMock), // Retornando o tipo correto
       );
 
       // Act
@@ -52,7 +52,8 @@ void main() {
   group('Update Student Caminho Triste :[', () {
     test('Deve retornar erro se o nome ou o ID estiver vazio ...', () async {
       // Arrange
-      final invalidDTO = StudentDTO(entity: emptyEntity); // Nome e ID vazios
+      final invalidDTO =
+          StudentDTO(entity: studentEntityMock); // Nome e ID vazios
       when(() => repository.update(invalidDTO)).thenAnswer(
         (_) async => left(
           const StudentException(
@@ -72,7 +73,7 @@ void main() {
     test('Deve retornar StudentException se o nome estiver vazio ...',
         () async {
       // Arrange
-      final invalidDTO = StudentDTO(entity: emptyEntity); // Nome vazio
+      final invalidDTO = StudentDTO(entity: studentEntityMock); // Nome vazio
       when(() => repository.update(invalidDTO)).thenAnswer(
         (_) async => left(
           const StudentException(

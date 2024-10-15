@@ -51,32 +51,28 @@
 - **Curso - Matricula**: Um curso pode ter vários alunos matriculados (1 para N).
 - **Aluno - Matricula**: Um aluno pode estar matriculado em vários cursos (1 para N).
 
-
-```mermaid
-merDiagram
+erDiagram
     CURSO {
-        int codigo
+        int codigo PK
         string descricao
         string ementa
     }
 
     ALUNO {
-        int codigo
+        int codigo PK
         string nome
     }
 
     MATRICULA {
-        int codigo
-        int codigo_aluno
-        int codigo_curso
+        int codigo PK
+        int codigo_aluno FK
+        int codigo_curso FK
         date data_matricula
         float nota_final
     }
 
-    CURSO ||--|{ ALUNO : matriculado
-    ALUNO ||--|{ MATRICULA : possui
-    CURSO ||--|{ MATRICULA : oferece
-```
+    CURSO ||--|{ MATRICULA : oferece {min 0..max n}
+    ALUNO ||--|{ MATRICULA : possui {min 0..max n}
 
 ```sql
 

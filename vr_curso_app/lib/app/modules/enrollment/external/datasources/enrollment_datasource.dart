@@ -28,7 +28,7 @@ class EnrollmentDatasource implements IEnrollmentDatasource {
   @override
   Future<dynamic> get(EnrollmentDTO param) async {
     final response =
-        await client.get('${ConstHttp.enrollments}${param.entity.id}');
+        await client.get('${ConstHttp.enrollments}/${param.entity.id}');
 
     if (response.statusCode != 200) {
       return EnrollmentException(
@@ -43,7 +43,7 @@ class EnrollmentDatasource implements IEnrollmentDatasource {
   @override
   Future<dynamic> delete(EnrollmentDTO param) async {
     final response =
-        await client.delete('${ConstHttp.enrollments}${param.entity.id}');
+        await client.delete('${ConstHttp.enrollments}/${param.entity.id}');
 
     if (response.statusCode != 204) {
       return EnrollmentException(
@@ -58,7 +58,7 @@ class EnrollmentDatasource implements IEnrollmentDatasource {
   @override
   Future<dynamic> update(EnrollmentDTO param) async {
     final response = await client.put(
-      ('${ConstHttp.enrollments}${param.entity.id}'),
+      ('${ConstHttp.enrollments}/${param.entity.id}'),
       data: EnrollmentAdapter.toMap(param.entity),
     );
 

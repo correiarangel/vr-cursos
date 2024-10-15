@@ -18,7 +18,13 @@ class StudentModel extends StudentEntity {
       enrollmentIds: enrollmentIds ?? this.enrollmentIds,
     );
   }
-
+  factory StudentModel.empty() {
+    return StudentModel(
+      id: -1,
+      name: '',
+      enrollmentIds: [],
+    );
+  }
   factory StudentModel.fromModel(StudentEntity entity) {
     return StudentModel(
       id: entity.id,

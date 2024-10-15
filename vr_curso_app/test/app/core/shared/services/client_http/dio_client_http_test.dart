@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:vr_curso_app/app/core/shared/failures/exceptions.dart';
 import 'package:vr_curso_app/app/core/shared/services/client_http/dio_client_http.dart';
 import 'package:vr_curso_app/app/core/shared/services/client_http/i_client_http.dart';
 
@@ -98,4 +99,87 @@ void main() {
       expect(result, isA<BaseResponse>());
     });
   });
+
+
+
+  group('DioClientHttp sad way', () {
+  test('Should throw DioError when GET request fails', () async {
+    // Arrange
+    when(() => dio.get(any())).thenThrow(DioException(
+      requestOptions: RequestOptions(path: 'url'),
+      response: Response(
+        requestOptions: RequestOptions(path: 'url'),
+        statusCode: 500,
+        statusMessage: 'Internal Server Error',
+      ),
+    ));
+
+    // Act & Assert
+   // final result = await dioClient.get('url');
+    expect(()=>dioClient.get('url'), throwsA(isA<ClientHttpException>()));
+  });
+    });
+
+    test('Should throw DioError when POST request fails', () async {
+      // Arrange
+      when(() => dio.post(any(), data: any(named: 'data'))).thenThrow(
+        DioException(
+          requestOptions: RequestOptions(path: 'url'),
+          response: Response(
+            requestOptions: RequestOptions(path: 'url'),
+            statusCode: 400,
+            statusMessage: 'Bad Request',
+          ),
+        ),
+      );
+
+      // Act & Assert
+      expect(() => dioClient.post('url', data: {}), throwsA(isA<ClientHttpException>()));
+    });
+
+    test('Should throw DioError when DELETE request fails', () async {
+      // Arrange
+      when(() => dio.delete(any())).thenThrow(DioException(
+        requestOptions: RequestOptions(path: 'url'),
+        response: Response(
+          requestOptions: RequestOptions(path: 'url'),
+          statusCode: 404,
+          statusMessage: 'Not Found',
+        ),
+      ));
+
+      // Act & Assert
+      expect(() => dioClient.delete('url'), throwsA(isA<ClientHttpException>()));
+    });
+
+    test('Should throw DioError when PUT request fails', () async {
+      // Arrange
+      when(() => dio.put(any(), data: any(named: 'data'))).thenThrow(DioException(
+        requestOptions: RequestOptions(path: 'url'),
+        response: Response(
+          requestOptions: RequestOptions(path: 'url'),
+          statusCode: 403,
+          statusMessage: 'Forbidden',
+        ),
+      ));
+
+      // Act & Assert
+      expect(() => dioClient.put('url', data: {}), throwsA(isA<ClientHttpException>()));
+    });
+
+    test('Should throw DioError when UPLOAD request fails', () async {
+      // Arrange
+      when(() => dio.put(any(), data: any(named: 'data'))).thenThrow(DioException(
+        requestOptions: RequestOptions(path: 'url'),
+        response: Response(
+          requestOptions: RequestOptions(path: 'url'),
+          statusCode: 413,
+          statusMessage: 'Payload Too Large',
+        ),
+      ));
+
+      // Act & Assert
+      expect(() => dioClient.upload('url', data: []), throwsA(isA<ClientHttpException>()));
+    });
+  
 }

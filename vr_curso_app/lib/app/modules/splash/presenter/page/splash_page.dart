@@ -15,7 +15,7 @@ class SplashPageState extends State<SplashPage>
   Future<void> initHome() async {
     //Modular.to.pushReplacementNamed('/home');
     await Future.delayed(const Duration(seconds: 2), () async {
-      log('////// VAI PARA LOGIN >)))),)*>');
+
       Modular.to.pushReplacementNamed('/home_module/home_page');
       //Navigator.pushReplacementNamed(context, '/login_page');
       // Modular.to.pushReplacementNamed('/home_page');

@@ -15,6 +15,12 @@ class UpdateStudentEvent extends StudentEvent {
   final StudentModel student;
   UpdateStudentEvent(this.student);
 }
+
+class CurretStudentEvent extends StudentEvent {
+  final StudentModel student;
+  CurretStudentEvent(this.student);
+}
+
 class DeleteStudentEvent extends StudentEvent {
   final StudentModel student;
   DeleteStudentEvent(this.student);

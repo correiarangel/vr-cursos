@@ -27,9 +27,10 @@ class CoreModule extends Module {
           receiveTimeout: const Duration(seconds: 15),
           connectTimeout: const Duration(seconds: 15),
           headers: {
-            "Accept": "application/json",
-            "Content-Type": "application/x-www-form-urlencoded",
+            "Accept": "*/*",
+            "Content-Type":"application/json",
           },
+          
         ),
       );
 }

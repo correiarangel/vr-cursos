@@ -33,6 +33,7 @@ class StudentBloc extends Bloc<StudentEvent, StudentState> {
     on<GetAllStudentEvent>(_onGetAll);
     on<ChangedStudentInitalEvent>(_onSetInit);
     on<DeleteStudentEvent>(_onDelete);
+    on<CurretStudentEvent>(_onChangesStudent);
   }
 
   Future<void> _onCreate(CreateStudentEvent event, Emitter emit) async {
@@ -42,11 +43,18 @@ class StudentBloc extends Bloc<StudentEvent, StudentState> {
         await createUsecase.call(StudentModel.fromDTO(event.student));
 
     result.fold(
-      (failure) => emit(StudentExceptionState(StudentException(
-          message: failure.message, stackTrace: StackTrace.current))),
+      (failure) => emit(
+        StudentExceptionState(
+          StudentException(
+            message: failure.message,
+            stackTrace: StackTrace.current,
+          ),
+        ),
+      ),
       (student) =>
           emit(CreateStudentSuccessState(StudentModel.fromModel(student))),
     );
+    // emit(StudentInitialState());
   }
 
   FutureOr<void> _setLoading(
@@ -164,5 +172,10 @@ class StudentBloc extends Bloc<StudentEvent, StudentState> {
         );
       },
     );
+  }
+
+  FutureOr<void> _onChangesStudent(
+      CurretStudentEvent event, Emitter<StudentState> emit) {
+    emit(CurrentStudentState(event.student));
   }
 }

@@ -75,7 +75,7 @@ void main() {
     });
 
     test('Should return Map<String, dynamic> with student data...', () async {
-      var url = '${ConstHttp.students}1';
+      var url = '${ConstHttp.students}/1';
       when(() => client.get(url)).thenAnswer(
         (_) async => BaseResponse(
           mockStudentDataMap,
@@ -95,7 +95,7 @@ void main() {
     });
 
     test('Should return the student name as John...', () async {
-      var url = '${ConstHttp.students}1';
+      var url = '${ConstHttp.students}/1';
       when(() => client.get(url)).thenAnswer(
         (_) async => BaseResponse(
           mockStudentDataMap,
@@ -137,7 +137,7 @@ void main() {
     });
 
     test('Should update an existing student...', () async {
-      var url = '${ConstHttp.students}1';
+      var url = '${ConstHttp.students}/1';
       final param = StudentAdapter.toMap(studentEntityMock);
 
       when(() => client.put(url, data: param)).thenAnswer(
@@ -157,7 +157,7 @@ void main() {
     });
 
     test('Should delete a student and return true...', () async {
-      var url = '${ConstHttp.students}1';
+      var url = '${ConstHttp.students}/1';
 
       when(() => client.delete(url)).thenAnswer(
         (_) async => BaseResponse(
@@ -202,7 +202,7 @@ void main() {
 
     test('Should return StudentException on failure to fetch a student...',
         () async {
-      var url = '${ConstHttp.students}-1';
+      var url = '${ConstHttp.students}/-1';
 
       when(() => client.get(url)).thenAnswer(
         (_) async => Future.value(BaseResponse(
@@ -247,7 +247,7 @@ void main() {
 
     test('Should return StudentException on failure to update a student...',
         () async {
-      var url = '${ConstHttp.students}-1';
+      var url = '${ConstHttp.students}/-1';
       final param = StudentAdapter.toMap(dtoEntityMOCK.entity);
 
       when(() => client.put(url, data: param)).thenAnswer(
@@ -270,7 +270,7 @@ void main() {
 
     test('Should return StudentException on failure to delete a student...',
         () async {
-      var url = '${ConstHttp.students}-1';
+      var url = '${ConstHttp.students}/-1';
 
       when(() => client.delete(url)).thenAnswer(
         (_) async => BaseResponse(

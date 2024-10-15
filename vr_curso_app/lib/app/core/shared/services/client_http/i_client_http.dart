@@ -6,15 +6,8 @@ abstract class IClientHttp {
   Future<BaseResponse> delete(String path);
   void setBaseUrl(String url);
   void setHeaders(Map<String, String> header);
-  void addInterceptor(BaseInterceptor interceptor);
-  void removeInterceptor(BaseInterceptor interceptor);
 }
 
-abstract class BaseInterceptor<TRequest, TResponse, TError> {
-  Future<TRequest> onRequest(TRequest request);
-  Future<TResponse> onResponse(TResponse response);
-  Future<TError> onError(TError error);
-}
 
 class BaseResponse {
   final int statusCode;

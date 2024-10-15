@@ -28,7 +28,7 @@ class StudentDatasource implements IStudentDatasource {
 
   @override
   Future<dynamic> get(StudentDTO param) async {
-    final response = await client.get('${ConstHttp.students}${param.entity.id}');
+    final response = await client.get('${ConstHttp.students}/${param.entity.id}');
 
     if (response.statusCode != 200) {
       return StudentException(
@@ -42,9 +42,9 @@ class StudentDatasource implements IStudentDatasource {
 
   @override
   Future<dynamic> delete(StudentDTO param) async {
-    final response = await client.delete('${ConstHttp.students}${param.entity.id}');
+    final response = await client.delete('${ConstHttp.students}/${param.entity.id}');
 
-    if (response.statusCode != 204) {
+    if (response.statusCode != 200) {
       return StudentException(
         message: 'Failed to delete student: ${response.statusCode}',
         stackTrace: StackTrace.current,
@@ -57,7 +57,7 @@ class StudentDatasource implements IStudentDatasource {
   @override
   Future<dynamic> update(StudentDTO param) async {
     final response = await client.put(
-      '${ConstHttp.students}${param.entity.id}',
+      '${ConstHttp.students}/${param.entity.id}',
       data: StudentAdapter.toMap(param.entity), // Convert StudentDTO to a Map
     );
 
@@ -78,7 +78,7 @@ class StudentDatasource implements IStudentDatasource {
       data: StudentAdapter.toMap(param.entity), // Convert StudentDTO to a Map
     );
 
-    if (response.statusCode != 201) {
+    if (response.statusCode != 200) {
       return StudentException(
         message: 'Failed to create student: ${response.statusCode}',
         stackTrace: StackTrace.current,

@@ -30,7 +30,7 @@ class CourseDatasource implements ICourseDatasource {
   @override
   Future<dynamic> get(CourseDTO param) async {
     log(('${ConstHttp.courses}${param.entity.id}'));
-    final response = await client.get('${ConstHttp.courses}${param.entity.id}');
+    final response = await client.get('${ConstHttp.courses}/${param.entity.id}');
 
     if (response.statusCode != 200) {
       return CourseException(
@@ -45,7 +45,7 @@ class CourseDatasource implements ICourseDatasource {
   @override
   Future<dynamic> delete(CourseDTO param) async {
     final response =
-        await client.delete('${ConstHttp.courses}${param.entity.id}');
+        await client.delete('${ConstHttp.courses}/${param.entity.id}');
 
     if (response.statusCode != 204) {
       return CourseException(
@@ -60,7 +60,7 @@ class CourseDatasource implements ICourseDatasource {
   @override
   Future<dynamic> update(CourseDTO param) async {
     final response = await client.put(
-      '${ConstHttp.courses}${param.entity.id}',
+      '${ConstHttp.courses}/${param.entity.id}',
       data: CourseAdapter.toMap(param.entity), // Converte CourseDTO para Map
     );
 

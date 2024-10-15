@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:vr_curso_app/app/core/shared/failures/exceptions.dart';
 
 import 'i_client_http.dart';
 
@@ -7,7 +8,7 @@ class DioClientHttp implements IClientHttp {
 
   DioClientHttp(this._dio);
 
-  final _interceptors = <DioInterceptor>[];
+
 
   @override
   void setBaseUrl(String url) {
@@ -21,8 +22,15 @@ class DioClientHttp implements IClientHttp {
 
   @override
   Future<BaseResponse> get(String path) async {
-    final response = await _dio.get(path);
-    return _responseAdapter(response);
+    try {
+      final response = await _dio.get(path);
+      return _responseAdapter(response);
+    } on DioException catch (err, s) {
+      throw ClientHttpException(
+          message: err.message ?? 'Erro client DIO GET', stackTrace: s);
+    } on Exception catch (err, s) {
+      throw ClientHttpException(message: err.toString(), stackTrace: s);
+    }
   }
 
   @override
@@ -30,14 +38,28 @@ class DioClientHttp implements IClientHttp {
     String path, {
     Map<String, dynamic>? data,
   }) async {
-    final response = await _dio.post(path, data: data);
-    return _responseAdapter(response);
+    try {
+      final response = await _dio.post(path, data: data);
+      return _responseAdapter(response);
+    } on DioException catch (err, s) {
+      throw ClientHttpException(
+          message: err.message ?? 'Erro client DIO POST', stackTrace: s);
+    } on Exception catch (err, s) {
+      throw ClientHttpException(message: err.toString(), stackTrace: s);
+    }
   }
 
   @override
   Future<BaseResponse> delete(String path) async {
-    final response = await _dio.delete(path);
-    return _responseAdapter(response);
+    try {
+      final response = await _dio.delete(path);
+      return _responseAdapter(response);
+    } on DioException catch (err, s) {
+      throw ClientHttpException(
+          message: err.message ?? 'Erro client DIO GET', stackTrace: s);
+    } on Exception catch (err, s) {
+      throw ClientHttpException(message: err.toString(), stackTrace: s);
+    }
   }
 
   @override
@@ -45,8 +67,15 @@ class DioClientHttp implements IClientHttp {
     String path, {
     Map<String, dynamic>? data,
   }) async {
-    final response = await _dio.put(path, data: data);
-    return _responseAdapter(response);
+    try {
+      final response = await _dio.put(path, data: data);
+      return _responseAdapter(response);
+    } on DioException catch (err, s) {
+      throw ClientHttpException(
+          message: err.message ?? 'Erro client DIO GET', stackTrace: s);
+    } on Exception catch (err, s) {
+      throw ClientHttpException(message: err.toString(), stackTrace: s);
+    }
   }
 
   @override
@@ -54,19 +83,17 @@ class DioClientHttp implements IClientHttp {
     String path, {
     List<int>? data,
   }) async {
-    final response = await _dio.post(path, data: data);
-    return _responseAdapter(response);
+    try {
+      final response = await _dio.put(path, data: data);
+      return _responseAdapter(response);
+    } on DioException catch (err, s) {
+      throw ClientHttpException(
+          message: err.message ?? 'Erro client DIO GET', stackTrace: s);
+    } on Exception catch (err, s) {
+      throw ClientHttpException(message: err.toString(), stackTrace: s);
+    }
   }
 
-  @override
-  void addInterceptor(covariant DioInterceptor interceptor) {
-    _interceptors.add(interceptor);
-  }
-
-  @override
-  void removeInterceptor(covariant DioInterceptor interceptor) {
-    _interceptors.remove(interceptor);
-  }
 
   BaseResponse _responseAdapter(Response response) {
     return BaseResponse(
@@ -81,24 +108,3 @@ class DioClientHttp implements IClientHttp {
   }
 }
 
-class DioInterceptor
-    extends BaseInterceptor<RequestOptions, Response, DioException> {
-  @override
-  Future<DioException> onError(DioException error) async {
-    return error;
-  }
-
-  @override
-  Future<RequestOptions> onRequest(
-    RequestOptions request,
-  ) async {
-    return request;
-  }
-
-  @override
-  Future<Response> onResponse(
-    Response response,
-  ) async {
-    return response;
-  }
-}

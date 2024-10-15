@@ -8,6 +8,7 @@ class HomeModule extends Module {
 
   @override
   void routes(r) {
+
     r.child('/home_page', child: (context) => const HomePage());
   }
 }

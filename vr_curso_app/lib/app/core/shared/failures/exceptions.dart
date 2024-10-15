@@ -7,23 +7,11 @@ class AppException extends IAppException {
   });
 }
 
-class AuthException extends AppException {
-  const AuthException({
+class ClientHttpException extends AppException {
+  const ClientHttpException({
     required super.message,
     required super.stackTrace,
   });
-}
 
-class RepositoryException extends AppException {
-  RepositoryException({
-    required super.message,
-    required super.stackTrace,
-  });
-}
 
-class FailedUpdateException extends RepositoryException {
-  FailedUpdateException({
-    required super.message,
-    required super.stackTrace,
-  });
 }

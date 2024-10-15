@@ -14,7 +14,10 @@ class CreateStudentSuccessState implements StudentState {
   final StudentModel student;
   CreateStudentSuccessState(this.student);
 }
-
+class CurrentStudentState implements StudentState {
+  final StudentModel student;
+  CurrentStudentState(this.student);
+}
 class DeleteStudentSuccessState implements StudentState {}
 
 class UpdateStudentSuccessState implements StudentState {

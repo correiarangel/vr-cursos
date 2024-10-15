@@ -6,7 +6,7 @@ class StudentAdapter {
   static Map<String, dynamic> toMap(StudentEntity entity) {
     return {
       'codigo': entity.id,
-      'name': entity.name,
+      'nome': entity.name,
       'alunoCodigosMatriculas': entity.enrollmentIds,
     };
   }
@@ -15,7 +15,7 @@ class StudentAdapter {
     return StudentEntity(
       id: map['codigo']?.toInt() ?? 0,
       name: map['nome'] ?? '',
-      enrollmentIds: List<int>.from(map['alunoCodigosMatriculas']),
+      enrollmentIds: List<int>.from(map['alunoCodigosMatriculas']??[]),
     );
   }
 

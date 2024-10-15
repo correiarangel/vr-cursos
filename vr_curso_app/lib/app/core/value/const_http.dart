@@ -1,6 +1,6 @@
 class ConstHttp {
-  static const String base = 'http://localhost:8080';
-  static const String enrollments = '/enrollments/';
-  static const String courses = '/courses/';
-  static const String students = '/students/';
-}
+  static const String base = 'http://192.168.200.109:8080/';
+  static const String enrollments = 'api-vr/v1/enrollments';
+  static const String courses = 'api-vr/v1/courses';
+  static const String students = 'api-vr/v1/students';
+}                               

@@ -66,7 +66,7 @@ void main() {
 
     test('Should return Map<String, dynamic> with enrollment data...',
         () async {
-        const url = '${ConstHttp.enrollments}1';
+        const url = '${ConstHttp.enrollments}/1';
       when(() => client.get(url)).thenAnswer(
         (_) async => BaseResponse(
           mockEnrollmentData,
@@ -86,7 +86,7 @@ void main() {
     });
 
     test('Should return the student name as John Doe...', () async {
-         const url = '${ConstHttp.enrollments}1';
+         const url = '${ConstHttp.enrollments}/1';
       when(() => client.get(url)).thenAnswer(
         (_) async => BaseResponse(
           mockEnrollmentData,
@@ -128,7 +128,7 @@ void main() {
     });
 
     test('Should update an existing enrollment...', () async {
-          const url = '${ConstHttp.enrollments}1';
+          const url = '${ConstHttp.enrollments}/1';
       final param = EnrollmentAdapter.toMap(enrollmenDtoMock.entity);
 
       when(() => client.put(url, data: param)).thenAnswer(
@@ -148,7 +148,7 @@ void main() {
     });
 
     test('Should delete an enrollment and return true...', () async {
-           const url = '${ConstHttp.enrollments}1';
+           const url = '${ConstHttp.enrollments}/1';
 
       when(() => client.delete(url)).thenAnswer(
         (_) async => BaseResponse(
@@ -194,7 +194,7 @@ void main() {
     test(
         'Should return EnrollmentException on failure to fetch an enrollment...',
         () async {
-     const url = '${ConstHttp.enrollments}-1';
+     const url = '${ConstHttp.enrollments}/-1';
 
       when(() => client.get(url)).thenAnswer(
         (_) async => Future.value(BaseResponse(
@@ -241,7 +241,7 @@ void main() {
     test(
         'Should return EnrollmentException on failure to update an enrollment...',
         () async {
-     const url = '${ConstHttp.enrollments}-1';
+     const url = '${ConstHttp.enrollments}/-1';
       final param = EnrollmentAdapter.toMap(enrollmenDtoEmptyMock.entity);
 
       when(() => client.put(url, data: param)).thenAnswer(
@@ -265,7 +265,7 @@ void main() {
     test(
         'Should return EnrollmentException on failure to delete an enrollment...',
         () async {
-      const url = '${ConstHttp.enrollments}-1';
+      const url = '${ConstHttp.enrollments}/-1';
 
       when(() => client.delete(url)).thenAnswer(
         (_) async => BaseResponse(

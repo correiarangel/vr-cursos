@@ -47,7 +47,7 @@ class CourseDatasource implements ICourseDatasource {
     final response =
         await client.delete('${ConstHttp.courses}/${param.entity.id}');
 
-    if (response.statusCode != 204) {
+    if (response.statusCode != 200) {
       return CourseException(
         message: 'Failed to delete course: ${response.statusCode}',
         stackTrace: StackTrace.current,
@@ -81,7 +81,7 @@ class CourseDatasource implements ICourseDatasource {
       data: CourseAdapter.toMap(param.entity), // Converte CourseDTO para Map
     );
 
-    if (response.statusCode != 201) {
+    if (response.statusCode != 200) {
       return CourseException(
         message: 'Failed to create course: ${response.statusCode}',
         stackTrace: StackTrace.current,

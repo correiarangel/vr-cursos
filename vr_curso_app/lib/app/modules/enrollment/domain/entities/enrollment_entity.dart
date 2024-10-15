@@ -11,6 +11,4 @@ class EnrollmentEntity {
     required this.student,
     required this.course,
   });
-
-
 }

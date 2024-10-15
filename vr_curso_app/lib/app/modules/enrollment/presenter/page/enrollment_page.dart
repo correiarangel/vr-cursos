@@ -1,37 +1,40 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vr_curso_app/app/modules/message_center/domain/enums/message_type.dart';
-import 'package:vr_curso_app/app/modules/student/presenter/blocs/state/student_state.dart';
-
-import 'package:vr_curso_app/app/modules/student/presenter/blocs/student_bloc.dart';
-import 'package:vr_curso_app/app/modules/student/presenter/models/student_model.dart';
-import 'package:vr_curso_app/app/modules/student/presenter/store/student_store.dart';
-import 'package:vr_curso_app/app/modules/student/presenter/widgets/student_card_widget.dart';
 
 import '../../../../core/shared/widgets/not_value_widget.dart';
 import '../../../../core/shared/widgets/vr_progress.dart';
 
-class StudentPage extends StatefulWidget {
-  final StudentStore store;
-  final StudentBloc bloc;
-  const StudentPage({
+import 'package:vr_curso_app/app/modules/enrollment/presenter/store/enrollment_store.dart';
+import 'package:vr_curso_app/app/modules/enrollment/presenter/models/enrollment_model.dart';
+
+import '../blocs/enrrollment_bloc.dart';
+import '../blocs/state/enrrollment_state.dart';
+import '../widgets/enrollment_card_widget.dart';
+
+class EnrollmentPage extends StatefulWidget {
+  final EnrollmentStore store;
+  final EnrollmentBloc bloc;
+
+  const EnrollmentPage({
     super.key,
     required this.store,
     required this.bloc,
   });
 
   @override
-  State<StudentPage> createState() => _StudentPageState();
+  State<EnrollmentPage> createState() => _EnrollmentPageState();
 }
 
-class _StudentPageState extends State<StudentPage> {
+class _EnrollmentPageState extends State<EnrollmentPage> {
+  bool isLoading = false;
+
   @override
   void initState() {
-    widget.store.getAllStudents(widget.bloc);
     super.initState();
+    widget.store.getAllEnrollments(widget.bloc);
   }
 
-  bool isLoading = false;
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
@@ -42,59 +45,64 @@ class _StudentPageState extends State<StudentPage> {
       appBar: AppBar(
         centerTitle: true,
         title: const Text(
-          'Alunos',
+          'Matrículas',
           style: TextStyle(),
         ),
         leading: IconButton(
           icon: const Icon(Icons.keyboard_arrow_left),
           onPressed: () {
-            Navigator.of(context).pop();
-          }, //=> Navigator.of(context).pop(),
+            Navigator.of(context).pop(); // Volta para a tela anterior
+          },
         ),
       ),
       body: SingleChildScrollView(
         child: SizedBox(
           width: width * 100,
-          child: BlocBuilder<StudentBloc, StudentState>(
+          child: BlocBuilder<EnrollmentBloc, EnrollmentState>(
             bloc: widget.bloc,
             builder: (context, state) {
-              if (state is CreateStudentLoadingState) isLoading = true;
-
-              if (state is GetAllStudentSuccessState) {
-                isLoading = false;
-                widget.store.setStudents(state.students);
+              if (state is CreateEnrollmentLoadingState) {
+                isLoading = true;
               }
 
-              if (state is UpdateStudentSuccessState) {
+              if (state is GetAllEnrollmentSuccessState) {
+                isLoading = false;
+                widget.store.setEnrollments(state.enrollments);
+              }
+
+              if (state is UpdateEnrollmentSuccessState) {
                 isLoading = false;
                 WidgetsBinding.instance.addPostFrameCallback((_) {
                   widget.store.message.creatMessage(
-                    message: 'Aluno atualisado com sucesso!',
+                    message: 'Matrícula atualizada com sucesso!',
                     color: colorScheme,
                     icon: Icons.check,
                     type: MessageType.success,
                   );
                 });
               }
-              if (state is CreateStudentSuccessState) {
+
+              if (state is CreateEnrollmentSuccessState) {
                 isLoading = false;
-                widget.store.getAllStudents(widget.bloc);
+                WidgetsBinding.instance.addPostFrameCallback((_) {
+                  widget.store.getAllEnrollments(widget.bloc);
+                });
               }
 
-              if (state is DeleteStudentSuccessState) {
+              if (state is DeleteEnrollmentSuccessState) {
                 isLoading = false;
                 WidgetsBinding.instance.addPostFrameCallback((_) {
                   widget.store.message.creatMessage(
-                    message: 'Aluno deletado com sucesso!',
+                    message: 'Matrícula deletada com sucesso!',
                     color: colorScheme,
                     icon: Icons.check,
                     type: MessageType.success,
                   );
                 });
-                widget.store.getAllStudents(widget.bloc);
+                widget.store.getAllEnrollments(widget.bloc);
               }
 
-              if (state is StudentExceptionState) {
+              if (state is EnrollmentExceptionState) {
                 isLoading = false;
                 WidgetsBinding.instance.addPostFrameCallback((_) {
                   widget.store.message.creatMessage(
@@ -115,22 +123,22 @@ class _StudentPageState extends State<StudentPage> {
                       children: [
                         const SizedBox(height: 16),
                         Visibility(
-                          visible: widget.store.students.isNotEmpty,
+                          visible: widget.store.enrollments.isNotEmpty,
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: <Widget>[
                               SizedBox(
                                 height: height * 78,
                                 child: ListView.builder(
-                                  itemCount: widget.store.students.length,
+                                  itemCount: widget.store.enrollments.length,
                                   shrinkWrap: true,
                                   itemBuilder: (context, index) {
-                                    StudentModel model =
-                                        widget.store.students[index];
+                                    EnrollmentModel model =
+                                        widget.store.enrollments[index];
 
-                                    return StudentCardWidget(
+                                    return EnrollmentCardWidget(
                                       bloc: widget.bloc,
-                                      student: model,
+                                      enrollment: model,
                                       store: widget.store,
                                     );
                                   },
@@ -142,8 +150,8 @@ class _StudentPageState extends State<StudentPage> {
                         ),
                         NotValueWidget(
                           onPressed: () =>
-                              widget.store.getAllStudents(widget.bloc),
-                          list: widget.store.students,
+                              widget.store.getAllEnrollments(widget.bloc),
+                          list: widget.store.enrollments,
                         ),
                       ],
                     );
@@ -152,16 +160,13 @@ class _StudentPageState extends State<StudentPage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.pushNamed(context, '/student_module/create_student_page');
-        },
+        onPressed: () => _onPressed(context),
         child: const Icon(Icons.add),
       ),
     );
   }
 
-  void onPressed(BuildContext ctx)  {
-     Navigator.pushNamed(
-        context, '/student_module/create_student_page');
+  void _onPressed(BuildContext ctx) {
+    Navigator.pushNamed(ctx, '/enrollment_module/create_enrollment_page');
   }
 }

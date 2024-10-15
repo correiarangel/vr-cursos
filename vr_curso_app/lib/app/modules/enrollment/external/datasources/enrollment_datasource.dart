@@ -45,7 +45,7 @@ class EnrollmentDatasource implements IEnrollmentDatasource {
     final response =
         await client.delete('${ConstHttp.enrollments}/${param.entity.id}');
 
-    if (response.statusCode != 204) {
+    if (response.statusCode != 200) {
       return EnrollmentException(
         message: 'Failed to delete enrollment: ${response.statusCode}',
         stackTrace: StackTrace.current,
@@ -79,7 +79,7 @@ class EnrollmentDatasource implements IEnrollmentDatasource {
       data: EnrollmentAdapter.toMap(param.entity),
     );
 
-    if (response.statusCode != 201) {
+    if (response.statusCode != 200) {
       return EnrollmentException(
         message: 'Failed to create enrollment: ${response.statusCode}',
         stackTrace: StackTrace.current,

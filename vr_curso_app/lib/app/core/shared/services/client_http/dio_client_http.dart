@@ -1,5 +1,10 @@
+
+
+import 'dart:developer';
+
 import 'package:dio/dio.dart';
 import 'package:vr_curso_app/app/core/shared/failures/exceptions.dart';
+import 'package:vr_curso_app/app/core/value/const_http.dart';
 
 import 'i_client_http.dart';
 
@@ -7,8 +12,6 @@ class DioClientHttp implements IClientHttp {
   final Dio _dio;
 
   DioClientHttp(this._dio);
-
-
 
   @override
   void setBaseUrl(String url) {
@@ -55,6 +58,13 @@ class DioClientHttp implements IClientHttp {
       final response = await _dio.delete(path);
       return _responseAdapter(response);
     } on DioException catch (err, s) {
+      log('${err.message}    ////////////////****1');
+      if (err.message != null &&
+          err.message!.contains(ConstHttp.dioErrorValidRequest)) {
+                  log('${err.message} ////////////////**************');
+        throw ClientHttpException(
+            message: ConstHttp.dioMessageErrorValidRequest, stackTrace: s);
+      }
       throw ClientHttpException(
           message: err.message ?? 'Erro client DIO GET', stackTrace: s);
     } on Exception catch (err, s) {
@@ -94,7 +104,6 @@ class DioClientHttp implements IClientHttp {
     }
   }
 
-
   BaseResponse _responseAdapter(Response response) {
     return BaseResponse(
       response.data,
@@ -107,4 +116,3 @@ class DioClientHttp implements IClientHttp {
     );
   }
 }
-

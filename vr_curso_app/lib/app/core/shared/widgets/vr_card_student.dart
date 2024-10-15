@@ -3,13 +3,18 @@ import 'package:flutter/material.dart';
 class VrCardStudent extends StatelessWidget {
   final String title;
   final String subTitle;
-  const VrCardStudent({super.key, required this.title, required this.subTitle,});
+  const VrCardStudent({
+    super.key,
+    required this.title,
+    required this.subTitle,
+  });
 
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
     return Card(
       child: ListTile(
+        titleAlignment: ListTileTitleAlignment.center,
         isThreeLine: true,
         iconColor: colorScheme.primary,
         enabled: true,
@@ -17,7 +22,7 @@ class VrCardStudent extends StatelessWidget {
           Icons.local_library_rounded,
           size: 32,
         ),
-        title: Text(title),
+        title: Text(title,textAlign: TextAlign.center),
         subtitle: Text(subTitle),
       ),
     );

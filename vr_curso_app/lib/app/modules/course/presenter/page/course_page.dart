@@ -1,37 +1,40 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vr_curso_app/app/modules/message_center/domain/enums/message_type.dart';
-import 'package:vr_curso_app/app/modules/student/presenter/blocs/state/student_state.dart';
-
-import 'package:vr_curso_app/app/modules/student/presenter/blocs/student_bloc.dart';
-import 'package:vr_curso_app/app/modules/student/presenter/models/student_model.dart';
-import 'package:vr_curso_app/app/modules/student/presenter/store/student_store.dart';
-import 'package:vr_curso_app/app/modules/student/presenter/widgets/student_card_widget.dart';
 
 import '../../../../core/shared/widgets/not_value_widget.dart';
 import '../../../../core/shared/widgets/vr_progress.dart';
 
-class StudentPage extends StatefulWidget {
-  final StudentStore store;
-  final StudentBloc bloc;
-  const StudentPage({
+import 'package:vr_curso_app/app/modules/course/presenter/blocs/course_bloc.dart';
+import 'package:vr_curso_app/app/modules/course/presenter/store/course_store.dart';
+import 'package:vr_curso_app/app/modules/course/presenter/widgets/course_card_widget.dart';
+import 'package:vr_curso_app/app/modules/course/presenter/models/course_model.dart';
+
+import '../../../course/presenter/blocs/state/course_state.dart';
+
+class CoursePage extends StatefulWidget {
+  final CourseStore store;
+  final CourseBloc bloc;
+
+  const CoursePage({
     super.key,
     required this.store,
     required this.bloc,
   });
 
   @override
-  State<StudentPage> createState() => _StudentPageState();
+  State<CoursePage> createState() => _CoursePageState();
 }
 
-class _StudentPageState extends State<StudentPage> {
+class _CoursePageState extends State<CoursePage> {
+  bool isLoading = false;
+
   @override
   void initState() {
-    widget.store.getAllStudents(widget.bloc);
     super.initState();
+    widget.store.getAllCourses(widget.bloc);
   }
 
-  bool isLoading = false;
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
@@ -42,59 +45,63 @@ class _StudentPageState extends State<StudentPage> {
       appBar: AppBar(
         centerTitle: true,
         title: const Text(
-          'Alunos',
+          'Cursos',
           style: TextStyle(),
         ),
         leading: IconButton(
           icon: const Icon(Icons.keyboard_arrow_left),
           onPressed: () {
-            Navigator.of(context).pop();
-          }, //=> Navigator.of(context).pop(),
+            Navigator.of(context).pop(); // Volta para a tela anterior
+          },
         ),
       ),
       body: SingleChildScrollView(
         child: SizedBox(
           width: width * 100,
-          child: BlocBuilder<StudentBloc, StudentState>(
+          child: BlocBuilder<CourseBloc, CourseState>(
             bloc: widget.bloc,
             builder: (context, state) {
-              if (state is CreateStudentLoadingState) isLoading = true;
-
-              if (state is GetAllStudentSuccessState) {
-                isLoading = false;
-                widget.store.setStudents(state.students);
+              if (state is CreateCourseLoadingState) {
+                isLoading = true;
               }
 
-              if (state is UpdateStudentSuccessState) {
+              if (state is GetAllCourseSuccessState) {
+                isLoading = false;
+                widget.store.setCourses(state.courses);
+              }
+
+              if (state is UpdateCourseSuccessState) {
                 isLoading = false;
                 WidgetsBinding.instance.addPostFrameCallback((_) {
                   widget.store.message.creatMessage(
-                    message: 'Aluno atualisado com sucesso!',
+                    message: 'Curso atualisado com sucesso!',
                     color: colorScheme,
                     icon: Icons.check,
                     type: MessageType.success,
                   );
                 });
               }
-              if (state is CreateStudentSuccessState) {
-                isLoading = false;
-                widget.store.getAllStudents(widget.bloc);
-              }
 
-              if (state is DeleteStudentSuccessState) {
+              if (state is CreateCourseSuccessState) {
+                isLoading = false;
+                WidgetsBinding.instance.addPostFrameCallback((_) {
+                  widget.store.getAllCourses(widget.bloc);
+                });
+              }
+              if (state is DeleteCourseSuccessState) {
                 isLoading = false;
                 WidgetsBinding.instance.addPostFrameCallback((_) {
                   widget.store.message.creatMessage(
-                    message: 'Aluno deletado com sucesso!',
+                    message: 'Curso deletado com sucesso!',
                     color: colorScheme,
                     icon: Icons.check,
                     type: MessageType.success,
                   );
                 });
-                widget.store.getAllStudents(widget.bloc);
+                widget.store.getAllCourses(widget.bloc);
               }
 
-              if (state is StudentExceptionState) {
+              if (state is CourseExceptionState) {
                 isLoading = false;
                 WidgetsBinding.instance.addPostFrameCallback((_) {
                   widget.store.message.creatMessage(
@@ -115,22 +122,22 @@ class _StudentPageState extends State<StudentPage> {
                       children: [
                         const SizedBox(height: 16),
                         Visibility(
-                          visible: widget.store.students.isNotEmpty,
+                          visible: widget.store.courses.isNotEmpty,
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: <Widget>[
                               SizedBox(
                                 height: height * 78,
                                 child: ListView.builder(
-                                  itemCount: widget.store.students.length,
+                                  itemCount: widget.store.courses.length,
                                   shrinkWrap: true,
                                   itemBuilder: (context, index) {
-                                    StudentModel model =
-                                        widget.store.students[index];
+                                    CourseModel model =
+                                        widget.store.courses[index];
 
-                                    return StudentCardWidget(
+                                    return CourseCardWidget(
                                       bloc: widget.bloc,
-                                      student: model,
+                                      course: model,
                                       store: widget.store,
                                     );
                                   },
@@ -142,8 +149,8 @@ class _StudentPageState extends State<StudentPage> {
                         ),
                         NotValueWidget(
                           onPressed: () =>
-                              widget.store.getAllStudents(widget.bloc),
-                          list: widget.store.students,
+                              widget.store.getAllCourses(widget.bloc),
+                          list: widget.store.courses,
                         ),
                       ],
                     );
@@ -152,16 +159,13 @@ class _StudentPageState extends State<StudentPage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.pushNamed(context, '/student_module/create_student_page');
-        },
+        onPressed: () => _onPressed(context),
         child: const Icon(Icons.add),
       ),
     );
   }
 
-  void onPressed(BuildContext ctx)  {
-     Navigator.pushNamed(
-        context, '/student_module/create_student_page');
+  void _onPressed(BuildContext ctx) {
+    Navigator.pushNamed(ctx, '/course_module/create_course_page');
   }
 }

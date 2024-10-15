@@ -3,25 +3,24 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vr_curso_app/app/core/shared/widgets/vr_progress.dart';
-import 'package:vr_curso_app/app/modules/student/presenter/blocs/event/student_event.dart';
-import 'package:vr_curso_app/app/modules/student/presenter/blocs/state/student_state.dart';
-import 'package:vr_curso_app/app/modules/student/presenter/models/student_model.dart';
-import 'package:vr_curso_app/app/modules/student/presenter/widgets/vr_form.dart';
 
 import '../../../message_center/domain/enums/message_type.dart';
-import '../blocs/student_bloc.dart';
-import '../store/student_store.dart';
+import '../blocs/course_bloc.dart';
+import '../blocs/state/course_state.dart';
+import '../store/course_store.dart';
+import '../widgets/vr_course_form.dart';
 
-class CreateStudentPage extends StatelessWidget {
-  final StudentStore store;
-  final StudentBloc bloc;
-  const CreateStudentPage({super.key, required this.store, required this.bloc});
+class CreateCoursePage extends StatelessWidget {
+  final CourseStore store;
+  final CourseBloc bloc;
+
+  const CreateCoursePage({super.key, required this.store, required this.bloc});
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<StudentBloc>(
+    return BlocProvider<CourseBloc>(
       create: (BuildContext context) => bloc,
-      child: BodyStudent(
+      child: BodyCourse(
         store: store,
         bloc: bloc,
       ),
@@ -29,21 +28,21 @@ class CreateStudentPage extends StatelessWidget {
   }
 }
 
-class BodyStudent extends StatefulWidget {
-  final StudentStore store;
-  final StudentBloc bloc;
+class BodyCourse extends StatefulWidget {
+  final CourseStore store;
+  final CourseBloc bloc;
 
-  const BodyStudent({super.key, required this.store, required this.bloc});
+  const BodyCourse({super.key, required this.store, required this.bloc});
 
   @override
-  State<BodyStudent> createState() => _BodyStudentState();
+  State<BodyCourse> createState() => _BodyCourseState();
 }
 
-class _BodyStudentState extends State<BodyStudent> {
-  final keyFormStudent = GlobalKey<FormState>();
-  StudentModel student = StudentModel.empty();
+class _BodyCourseState extends State<BodyCourse> {
+  final keyFormCourse = GlobalKey<FormState>();
 
   bool isLoading = false;
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -52,12 +51,12 @@ class _BodyStudentState extends State<BodyStudent> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: const Text('Cadastrar Aluno'),
+        title: const Text('Cadastrar Curso'),
         leading: IconButton(
           icon: const Icon(Icons.keyboard_arrow_left),
           onPressed: () {
             Navigator.of(context).pop();
-          }, //=> Navigator.of(context).pop(),
+          },
         ),
       ),
       body: SingleChildScrollView(
@@ -66,26 +65,24 @@ class _BodyStudentState extends State<BodyStudent> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              BlocBuilder<StudentBloc, StudentState>(
+              BlocBuilder<CourseBloc, CourseState>(
                 bloc: widget.bloc,
                 builder: (context, state) {
-                  if (state is CreateStudentLoadingState) isLoading = true;
+                  if (state is CreateCourseLoadingState) isLoading = true;
 
-                  if (state is GetStudentSuccessState) {
+                  if (state is GetCourseSuccessState) {
                     isLoading = false;
-                    student = state.student;
-                  }
-                  if (state is CurrentStudentState) {
-                    student = state.student;
-                    widget.store.setStudent(student);
-                    log('Auvindo student name em Page Student ${student.name}');
+                    widget.store.setCourse(state.course);
                   }
 
-                  if (state is CreateStudentSuccessState) {
+                  if (state is CurrentCourseState) {
+                    widget.store.setCourse(state.course);
+                  }
+                  if (state is CreateCourseSuccessState) {
                     isLoading = false;
                     WidgetsBinding.instance.addPostFrameCallback((_) {
                       widget.store.message.creatMessage(
-                        message: 'Aluno cadastrado com sucesso!',
+                        message: 'Curso cadastrado com sucesso!',
                         color: colorScheme,
                         icon: Icons.check,
                         type: MessageType.success,
@@ -93,8 +90,7 @@ class _BodyStudentState extends State<BodyStudent> {
                     });
                   }
 
-                  if (state is StudentExceptionState) {
-                    log('ERRO --- ${state.exception.message}');
+                  if (state is CourseExceptionState) {
                     isLoading = false;
                     WidgetsBinding.instance.addPostFrameCallback((_) {
                       widget.store.message.creatMessage(
@@ -108,9 +104,9 @@ class _BodyStudentState extends State<BodyStudent> {
 
                   return isLoading
                       ? VRProgress(height: size.height * 0.3)
-                      : VRForm(
+                      : VRCourseForm(
                           isUpdate: false,
-                          student: student,
+                          course: widget.store.course,
                           store: widget.store,
                           bloc: widget.bloc,
                         );

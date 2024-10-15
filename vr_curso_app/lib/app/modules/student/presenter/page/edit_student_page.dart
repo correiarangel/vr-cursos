@@ -94,15 +94,8 @@ class _BodyStudentEditState extends State<BodyStudentEdit> {
                   }
 
                   if (state is UpdateStudentSuccessState) {
-                    log('Aluno atualisado com sucesso!');
                     isLoading = false;
                     WidgetsBinding.instance.addPostFrameCallback((_) {
-                      widget.store.message.creatMessage(
-                        message: 'Aluno atualisado com sucesso!',
-                        color: colorScheme,
-                        icon: Icons.check,
-                        type: MessageType.success,
-                      );
                       Navigator.of(context).pop(true);
                     });
                   }

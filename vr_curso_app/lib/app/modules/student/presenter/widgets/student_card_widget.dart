@@ -24,6 +24,7 @@ class StudentCardWidget extends StatelessWidget {
       key: const Key('_studentCardWidget_'),
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: ListTile(
+        titleAlignment: ListTileTitleAlignment.center,
         onLongPress: () {
           showDialogMaterialDecision(
               message: 'Desejá excluir Aluno?',
@@ -39,11 +40,11 @@ class StudentCardWidget extends StatelessWidget {
           Icons.school_outlined,
           size: 32,
         ),
-        title: Text(student.name),
+        title: Text(student.name,),
         subtitle:
             Text('Matriculado em : ${student.enrollmentIds.length} curso(s)'),
         trailing: IconButton(
-            onPressed:()=> onPressed(context),
+            onPressed: () => onPressed(context),
             icon: const Icon(Icons.edit_calendar_outlined)),
       ),
     );
@@ -57,7 +58,7 @@ class StudentCardWidget extends StatelessWidget {
     );
 
     if (isUpdate is bool && isUpdate == true) {
-     store.getAllStudents(bloc);
+      store.getAllStudents(bloc);
     }
   }
 }

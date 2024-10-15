@@ -43,13 +43,13 @@ class StudentStore {
     required bool isUpdate,
     required StudentBloc bloc,
   }) {
-    if (isUpdate==true) {
+    if (isUpdate) {
       update(
         bloc: bloc,
         student: _student,
       );
     }
-    if (!isUpdate==false) {
+    if (!isUpdate) {
       create(
         bloc: bloc,
         name: student.name,

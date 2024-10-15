@@ -57,11 +57,6 @@ class _VRTextFormFieldState extends State<VRTextFormField> {
             context: context,
             labelText: 'Nome',
             hintText: 'Digite o nome do aluno...'
-            /*     suffixIcon: ClearTextFieldIcon(
-                  key: const Key("ClearFieldComplementEdit"),
-                  show: true,
-                  onPressed: () => _handleTapField(''),
-                ), */
             ),
       ),
     );

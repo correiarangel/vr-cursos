@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:vr_curso_app/app/core/value/const_http.dart';
 import 'package:vr_curso_app/app/modules/student/domain/usecase/create_student_usecase.dart';
 import 'package:vr_curso_app/app/modules/student/domain/usecase/delete_student_usecase.dart';
 import 'package:vr_curso_app/app/modules/student/domain/usecase/get_all_student_usecase.dart';
@@ -125,10 +126,15 @@ class StudentBloc extends Bloc<StudentEvent, StudentState> {
         await deleteUsecase(StudentModel.fromDTO(event.student));
     studentDelete.fold(
       (error) {
+        String msg = error.message;
+        if (error.message
+            .contains('Unexpected error deleting student: Instance of')) {
+          msg = ConstHttp.dioMessageErrorValidRequest;
+        }
         emit(
           StudentExceptionState(
             StudentException(
-              message: error.message,
+              message: msg,
               stackTrace: StackTrace.current,
             ),
           ),

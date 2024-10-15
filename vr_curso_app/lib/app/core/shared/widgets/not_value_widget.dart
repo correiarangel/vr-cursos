@@ -1,17 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:vr_curso_app/app/modules/student/presenter/models/student_model.dart';
-import 'package:vr_curso_app/app/modules/student/presenter/store/student_store.dart';
 
-class NotStudentWidget extends StatelessWidget {
-  final StudentStore store;
-  final List<StudentModel> students;
-
+class NotValueWidget extends StatelessWidget {
+  final List<dynamic> list;
   final void Function()? onPressed;
-  const NotStudentWidget({
+  const NotValueWidget({
     super.key,
-    required this.students,
+    required this.list,
     required this.onPressed,
-    required this.store,
+
   });
 
   @override
@@ -19,7 +15,7 @@ class NotStudentWidget extends StatelessWidget {
     final width = MediaQuery.of(context).size.width / 100;
     final height = MediaQuery.of(context).size.height / 100;
     return Visibility(
-      visible: students.isEmpty,
+      visible: list.isEmpty,
       child: SizedBox(
         width: width * 100,
         child: Column(

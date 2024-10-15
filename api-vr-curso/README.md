@@ -11,7 +11,7 @@
 # Teste Prático - Backend com Java.
 
     Publicando Sua API REST na Nuvem Usando Spring Boot 3, Java 17 e Railway
-    Organizado por[DIO Digital Inavation One](https://www.dio.me)
+    Organizado por[VR ...)
 
 ## Principais Tecnologias
 
@@ -37,42 +37,47 @@
 ### Aluno
 - **aluno_id** (PK)
 - nome
-- email
-- data_nascimento
-- data_cadastro
+
 
 ### Matricula
 - **matricula_id** (PK)
 - curso_id (FK) -> [Curso.curso_id]
 - aluno_id (FK) -> [Aluno.aluno_id]
-- data_matricula
+
 
 ## Relacionamentos
 - **Curso - Matricula**: Um curso pode ter vários alunos matriculados (1 para N).
 - **Aluno - Matricula**: Um aluno pode estar matriculado em vários cursos (1 para N).
 
-erDiagram
+´´´erDiagram
     CURSO {
-        int codigo PK
+        int curso_id PK
+        string nome
         string descricao
-        string ementa
+        date data_criacao
     }
 
     ALUNO {
-        int codigo PK
+        int aluno_id PK
         string nome
+        string email
+        date data_nascimento
+        date data_cadastro
     }
 
     MATRICULA {
-        int codigo PK
-        int codigo_aluno FK
-        int codigo_curso FK
+        int matricula_id PK
+        int curso_id FK
+        int aluno_id FK
         date data_matricula
-        float nota_final
+        numeric(4,2) nota_final
     }
 
     CURSO ||--|{ MATRICULA : oferece {min 0..max n}
     ALUNO ||--|{ MATRICULA : possui {min 0..max n}
+    ALUNO ||--|{ CURSO : interessado {min 0..max n}  -- Relacionamento opcional
+´´´
+---------------------------------------------------------------------------------
 
 ```sql
 

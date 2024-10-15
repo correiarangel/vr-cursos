@@ -29,10 +29,8 @@
 
 ### Curso
 - **curso_id** (PK)
-- nome
 - descricao
-- duracao
-- data_criacao
+- ementa
 
 ### Aluno
 - **aluno_id** (PK)
@@ -52,25 +50,19 @@
 ´´´erDiagram
     CURSO {
         int curso_id PK
-        string nome
         string descricao
-        date data_criacao
+        string ementa
     }
 
     ALUNO {
         int aluno_id PK
         string nome
-        string email
-        date data_nascimento
-        date data_cadastro
     }
 
     MATRICULA {
         int matricula_id PK
         int curso_id FK
         int aluno_id FK
-        date data_matricula
-        numeric(4,2) nota_final
     }
 
     CURSO ||--|{ MATRICULA : oferece {min 0..max n}
@@ -96,8 +88,6 @@ CREATE TABLE Matricula (
     codigo SERIAL PRIMARY KEY,
     codigo_aluno INTEGER REFERENCES Aluno(codigo) ON DELETE CASCADE,
     codigo_curso INTEGER REFERENCES Curso(codigo) ON DELETE CASCADE,
-    data_matricula DATE NOT NULL,
-    nota_final NUMERIC(5,2) CHECK (nota_final BETWEEN 0 AND 10)
 );
 
 ```

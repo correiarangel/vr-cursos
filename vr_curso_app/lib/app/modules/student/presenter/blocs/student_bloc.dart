@@ -163,10 +163,15 @@ class StudentBloc extends Bloc<StudentEvent, StudentState> {
     final result = await getAllUsecase();
     result.fold(
       (error) {
+        String msg = error.message;
+        if (error.message.contains(
+            'Unexpected error fetching students: Instance of')) {
+          msg = 'OPS! algo errado ao buscar aluno';
+        }
         emit(
           StudentExceptionState(
             StudentException(
-              message: error.message,
+              message: msg,
               stackTrace: StackTrace.current,
             ),
           ),

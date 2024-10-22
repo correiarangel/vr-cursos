@@ -37,6 +37,11 @@ dependencies {
 	//testImplementation 'org.springframework.security:spring-security-test'
 	//testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
+tasks.jar {
+	manifest {
+		attributes["Main_Class"]= "br.com.rangeldev.api_vr_curso.Application"
+	}
+}
 
 tasks.named('test') {
 	useJUnitPlatform()

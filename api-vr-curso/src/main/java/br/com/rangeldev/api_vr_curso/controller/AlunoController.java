@@ -26,7 +26,7 @@ public record AlunoController(IAlunoService alunoSevice) {
 
     @GetMapping
     @Operation(summary = "Get all students", description = "Retrieve a list of all registered students")
-    @ApiResponses(value = { 
+    @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Operation Successful ;)")
     })
     public ResponseEntity<List<AlunoDTO>> findAll() {
@@ -36,7 +36,7 @@ public record AlunoController(IAlunoService alunoSevice) {
     }
 
     @Operation(summary = "Get a student by ID", description = "Retrieve a specific student based on its ID")
-    @ApiResponses(value = { 
+    @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Operation Successful ;)"),
         @ApiResponse(responseCode = "404", description = "student not found")
     })
@@ -48,7 +48,7 @@ public record AlunoController(IAlunoService alunoSevice) {
 
     @PostMapping
     @Operation(summary = "Create a new student", description = "Create a new students and return the created students's data")
-    @ApiResponses(value = { 
+    @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "User created successfully"),
             @ApiResponse(responseCode = "422", description = "Invalid student data provided")
     })
@@ -63,7 +63,7 @@ public record AlunoController(IAlunoService alunoSevice) {
 
     @PutMapping("/{id}")
     @Operation(summary = "Update a student", description = "Update the data of an existing student based on its ID")
-    @ApiResponses(value = { 
+    @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "student updated successfully"),
         @ApiResponse(responseCode = "404", description = "student not found"),
         @ApiResponse(responseCode = "422", description = "Invalid student data provided")
@@ -75,7 +75,7 @@ public record AlunoController(IAlunoService alunoSevice) {
 
     @DeleteMapping("/{id}")
     @Operation(summary = "Delete a student", description = "Delete an existing student based on its ID")
-    @ApiResponses(value = { 
+    @ApiResponses(value = {
         @ApiResponse(responseCode = "204", description = "student deleted successfully"),
         @ApiResponse(responseCode = "404", description = "student not found")
     })

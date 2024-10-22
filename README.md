@@ -12,7 +12,7 @@ samples, guidance on mobile development, and a full API reference.
 # Sobre VR Curso App
 
 O App VR Curso deve realisar cadastro de aluno, curso e matricula .
-Seu desenvolvimento será com base em boas práticas, Clean Architecture, SOLID o aplicativo
+Seu desenvolvimento será com base em boas práticas, Clean Architecture, SOLID 
 
 ### Engenheira:
 

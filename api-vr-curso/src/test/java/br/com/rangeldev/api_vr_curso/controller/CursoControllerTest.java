@@ -2,6 +2,7 @@ package br.com.rangeldev.api_vr_curso.controller;
 
 import br.com.rangeldev.api_vr_curso.controller.dto.CursoDTO;
 import br.com.rangeldev.api_vr_curso.domain.entitties.Curso;
+import br.com.rangeldev.api_vr_curso.domain.entitties.Matricula;
 import br.com.rangeldev.api_vr_curso.domain.repository.ICursoRepository;
 import br.com.rangeldev.api_vr_curso.service.CursoService;
 import br.com.rangeldev.api_vr_curso.service.ICursoService;
@@ -33,6 +34,9 @@ class CursoControllerTest {
     @Mock
     private ICursoRepository cursoRepository;
 
+    @Mock
+    private  Matricula matricula;
+
     @InjectMocks
     private CursoController cursoController;
 
@@ -46,8 +50,8 @@ class CursoControllerTest {
     }
 
     Curso createCurso(Long cont) {
-        List<Long> matriculas = new ArrayList<Long>();
-        matriculas.add(1L);
+        List<Long> matriculas = new ArrayList<>();
+        matriculas.add(matricula.getCodigo());
         Curso curso = new Curso();
         curso.setCodigo(cont);
         curso.setDescricao("Descrição " + cont);

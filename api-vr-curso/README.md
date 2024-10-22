@@ -11,7 +11,7 @@
 # Teste Prático - Backend com Java.
 
     Publicando Sua API REST na Nuvem Usando Spring Boot 3, Java 17 e Railway
-    Organizado por[DIO Digital Inavation One](https://www.dio.me)
+    Organizado por[VR ...)
 
 ## Principais Tecnologias
 
@@ -29,54 +29,47 @@
 
 ### Curso
 - **curso_id** (PK)
-- nome
 - descricao
-- duracao
-- data_criacao
+- ementa
 
 ### Aluno
 - **aluno_id** (PK)
 - nome
-- email
-- data_nascimento
-- data_cadastro
+
 
 ### Matricula
 - **matricula_id** (PK)
 - curso_id (FK) -> [Curso.curso_id]
 - aluno_id (FK) -> [Aluno.aluno_id]
-- data_matricula
+
 
 ## Relacionamentos
 - **Curso - Matricula**: Um curso pode ter vários alunos matriculados (1 para N).
 - **Aluno - Matricula**: Um aluno pode estar matriculado em vários cursos (1 para N).
 
-
-```mermaid
-merDiagram
+´´´erDiagram
     CURSO {
-        int codigo
+        int curso_id PK
         string descricao
         string ementa
     }
 
     ALUNO {
-        int codigo
+        int aluno_id PK
         string nome
     }
 
     MATRICULA {
-        int codigo
-        int codigo_aluno
-        int codigo_curso
-        date data_matricula
-        float nota_final
+        int matricula_id PK
+        int curso_id FK
+        int aluno_id FK
     }
 
-    CURSO ||--|{ ALUNO : matriculado
-    ALUNO ||--|{ MATRICULA : possui
-    CURSO ||--|{ MATRICULA : oferece
-```
+    CURSO ||--|{ MATRICULA : oferece {min 0..max n}
+    ALUNO ||--|{ MATRICULA : possui {min 0..max n}
+    ALUNO ||--|{ CURSO : interessado {min 0..max n}  -- Relacionamento opcional
+´´´
+---------------------------------------------------------------------------------
 
 ```sql
 
@@ -95,8 +88,6 @@ CREATE TABLE Matricula (
     codigo SERIAL PRIMARY KEY,
     codigo_aluno INTEGER REFERENCES Aluno(codigo) ON DELETE CASCADE,
     codigo_curso INTEGER REFERENCES Curso(codigo) ON DELETE CASCADE,
-    data_matricula DATE NOT NULL,
-    nota_final NUMERIC(5,2) CHECK (nota_final BETWEEN 0 AND 10)
 );
 
 ```
